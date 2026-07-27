@@ -24,50 +24,6 @@
             animation: slideIn 0.3s ease-out;
         }
         
-        /* 1. ปรับขนาดสวิตช์ On/Off ให้มินิมอลลง */
-        .toggle-switch {
-            position: relative;
-            display: inline-block;
-            width: 38px;
-            height: 20px;
-        }
-        
-        .toggle-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        
-        .toggle-slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #475569;
-            transition: 0.3s;
-            border-radius: 20px;
-        }
-        
-        .toggle-slider:before {
-            position: absolute;
-            content: "";
-            height: 14px;
-            width: 14px;
-            left: 3px;
-            bottom: 3px;
-            background-color: white;
-            transition: 0.3s;
-            border-radius: 50%;
-        }
-        
-        input:checked + .toggle-slider {
-            background-color: #10b981;
-        }
-        
-        input:checked + .toggle-slider:before {
-            transform: translateX(18px);
-        }
-
-        /* 2. Effect ไฟกระพริบสีแดงวาบ ๆ เหมือนกระสือสำหรับไซเรน Emergency */
         @keyframes sirenGlow {
             0%, 100% {
                 transform: scale(1.1);
@@ -78,7 +34,7 @@
                 transform: scale(1.3);
                 filter: drop-shadow(0 0 15px rgba(239, 68, 68, 1)) drop-shadow(0 0 25px rgba(239, 68, 68, 0.8));
                 opacity: 1;
-                color: #ff4d4d;
+                color: #ef4444 !important;
             }
         }
         .siren-glowing {
@@ -92,44 +48,44 @@
     <div class="max-w-7xl mx-auto">
         <header class="flex justify-between items-center bg-slate-800 p-4 rounded-xl mb-6 shadow-md border border-slate-700">
             <div>
-                <h1 class="text-2xl font-bold text-emerald-400">Badminton Queue & Matchmaker</h1>
-                <p class="text-xs text-slate-400">ระบบจัดคิวและสุ่มคู่แบดมินตันอัจฉริยะ (เวอร์ชันปรับปรุงระบบสุ่ม & ลำดับคิว)</p>
+                <h1 class="text-2xl font-bold text-emerald-400">🏸 Badminton Queue & Matchmaker</h1>
+                <p class="text-xs text-slate-400">มีตรงไหนอยากให้แก้ไข ลิสต์บอกในกลุ่มได้เลยน้าาาาาาาา</p>
             </div>
     
-            <button onclick="resetAllData()" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg text-sm font-semibold transition">
+            <button onclick="resetAllData()" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg text-sm font-semibold transition cursor-pointer">
                 <i class="fa-solid fa-trash-can mr-2"></i>ล้างข้อมูลทั้งหมด
             </button>
         </header>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             
+            <!-- คอลัมน์ซ้าย: จัดการผู้เล่นและสถิติ -->
             <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 h-fit">
                 <h2 class="text-lg font-bold text-slate-200 mb-4 border-b border-slate-700 pb-2">
                     <i class="fa-solid fa-users mr-2"></i>รายชื่อนักกีฬา (<span id="playerCount">0</span>)
                 </h2>
    
-                <div class="mb-4 flex flex-wrap gap-2">
-                    <div class="flex items-center gap-2">
-                        <input id="newPlayerName" type="text" placeholder="ชื่อผู้เล่น" class="bg-slate-900 text-slate-100 text-xs rounded px-2 py-1 border border-slate-700" />
-        
-                        <select id="newPlayerLevel" class="bg-slate-900 text-slate-100 text-xs rounded px-2 py-1 border border-slate-700">
-                            <option value="L2">L2 (ทั่วไป)</option>
-                            <option value="L1">L1 (ใหม่)</option>
-                            <option value="L3">L3 (แบก)</option>
-                        </select>
-                        <button onclick="addPlayerFromInput()" class="bg-blue-600 hover:bg-blue-700 text-xs px-3 py-1.5 rounded font-medium transition">
-                            <i class="fa-solid fa-user-plus mr-1"></i>เพิ่มสมาชิก
-                        </button>
-                    </div>
+                <!-- ฟอร์มเพิ่มสมาชิก -->
+                <div class="mb-4 flex items-center gap-2 w-full">
+                    <input id="newPlayerName" type="text" placeholder="ชื่อผู้เล่น" class="w-28 h-9 bg-slate-900 text-slate-100 text-xs rounded-lg px-2.5 border border-slate-700 focus:outline-none focus:border-blue-500 transition" />
+                    
+                    <select id="newPlayerGender" class="h-9 bg-slate-900 text-slate-100 text-xs rounded-lg px-1.5 border border-slate-700 cursor-pointer focus:outline-none focus:border-blue-500 transition">
+                        <option value="M">ชาย (M)</option>
+                        <option value="W">หญิง (W)</option>
+                    </select>
+                    
+                    <button onclick="addPlayerFromInput()" class="h-9 whitespace-nowrap bg-blue-600 hover:bg-blue-700 text-white text-xs px-3 rounded-lg font-medium transition flex items-center gap-1 cursor-pointer">
+                        <i class="fa-solid fa-user-plus"></i> เพิ่มสมาชิก
+                    </button>
                 </div>
 
                 <div class="max-h-[350px] overflow-y-auto mb-4 border border-slate-700 rounded-lg bg-slate-900 p-2">
                     <table class="w-full text-sm text-left">
                         <thead>
                             <tr class="text-slate-400 border-b border-slate-700">
-                                <th class="pb-2">ชื่อ</th>
-                                <th class="pb-2">ระดับมือ</th>
-                                <th class="pb-2 text-center">สถานะ</th>
+                                <th class="pb-2">Player</th>
+                                <th class="pb-2">Gender</th>
+                                <th class="pb-2 text-center">Status</th>
                             </tr>
                         </thead>
                         <tbody id="playerInputList"></tbody>
@@ -137,20 +93,56 @@
                     <p class="text-xs text-slate-400 mt-2">หมายเหตุ: ผู้เล่นที่ถูกสุ่มเป็นคิวหรืออยู่ในสนามจะถูกลบจากรายชื่อเพื่อหลีกเลี่ยงการถูกเลือกซ้ำ</p>
                 </div>
 
-                <h3 class="text-sm font-bold text-slate-300 mb-2 mt-4"><i class="fa-solid fa-chart-simple mr-2"></i>สถิติจำนวนเกมรายบุคคล</h3>
+                <div class="flex items-center justify-between mb-2 mt-4">
+                    <h3 class="text-sm font-bold text-slate-300 flex items-center gap-1.5">
+                        <i class="fa-solid fa-chart-simple"></i> สถิติจำนวนเกมรายบุคคล
+                    </h3>
+                    
+                    <div>
+                        <button id="btn-edit-games-start" onclick="toggleEditGamesMode(true)" 
+                                class="w-7 h-7 bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-lg transition-all flex items-center justify-center cursor-pointer"
+                                title="แก้ไขจำนวนเกม">
+                            <i class="fa-solid fa-pen-to-square text-xs"></i>
+                        </button>
+
+                        <div id="edit-games-actions" class="hidden flex items-center gap-1.5">
+                            <button onclick="saveAllGamesPlayed()" 
+                                    class="w-7 h-7 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg shadow transition-all flex items-center justify-center cursor-pointer"
+                                    title="บันทึก">
+                                <i class="fa-solid fa-check text-xs"></i>
+                            </button>
+                            <button onclick="toggleEditGamesMode(false)" 
+                                    class="w-7 h-7 bg-rose-900/60 hover:bg-rose-800 text-rose-200 border border-rose-700/80 rounded-lg transition-all flex items-center justify-center cursor-pointer"
+                                    title="ยกเลิก">
+                                <i class="fa-solid fa-ban text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="max-h-[250px] overflow-y-auto border border-slate-700 rounded-lg bg-slate-900 p-2 text-xs">
                    <div id="statsSummary" class="divide-y divide-slate-800"></div>
                 </div>
             </div>
 
+            <!-- คอลัมน์ขวา: คิวสนามและคอร์ด -->
             <div class="lg:col-span-2 flex flex-col gap-6">
                 
                 <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
-                    <div class="flex justify-between items-center mb-4">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-2">
                         <h2 class="text-lg font-bold text-slate-200"><i class="fa-solid fa-clock-rotate-left mr-2"></i>กลุ่มคิวที่กำลังรอเล่น (Queue)</h2>
-                        <button onclick="matchmake()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-4 py-2 rounded-lg text-sm shadow transition">
-                            <i class="fa-solid fa-robot mr-2"></i>สุ่มจัดคิวอัตโนมัติ
-                        </button>
+                        <div class="flex gap-2">
+                            <button id="btnQueuePause" onclick="toggleQueuePause()" class="bg-slate-700 hover:bg-slate-600 text-slate-300 font-bold px-3 py-2 rounded-lg text-sm shadow transition flex items-center gap-1.5 cursor-pointer">
+                                <i class="fa-solid fa-circle-play"></i> รอ: OFF
+                            </button>
+
+                            <button onclick="matchmakeFriendzone()" class="bg-pink-600 hover:bg-pink-700 text-white font-bold px-4 py-2 rounded-lg text-sm shadow transition cursor-pointer">
+                                🍒 Friendzone
+                            </button>
+                            <button onclick="matchmake()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-4 py-2 rounded-lg text-sm shadow transition cursor-pointer">
+                                <i class="fa-solid fa-robot mr-2"></i>สุ่มจัดคิวอัตโนมัติ
+                            </button>
+                        </div>
                     </div>
 
                     <div class="bg-slate-900 border border-slate-700 rounded-lg p-3 min-h-[80px]">
@@ -164,8 +156,8 @@
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-lg font-bold text-slate-200"><i class="fa-solid fa-table-tennis-paddle-ball mr-2"></i>สถานะคอร์ดปัจจุบัน</h2>
                         <div class="flex gap-2">
-                            <button onclick="addCourt()" class="bg-teal-600 hover:bg-teal-700 text-xs px-3 py-1.5 rounded font-medium transition"><i class="fa-solid fa-plus mr-1"></i>เพิ่มคอร์ด</button>
-                            <button onclick="removeCourt()" class="bg-rose-600 hover:bg-rose-700 text-xs px-3 py-1.5 rounded font-medium transition"><i class="fa-solid fa-minus mr-1"></i>ลดคอร์ด</button>
+                            <button onclick="addCourt()" class="bg-teal-600 hover:bg-teal-700 text-xs px-3 py-1.5 rounded font-medium transition cursor-pointer"><i class="fa-solid fa-plus mr-1"></i>เพิ่มคอร์ด</button>
+                            <button onclick="removeCourt()" class="bg-rose-600 hover:bg-rose-700 text-xs px-3 py-1.5 rounded font-medium transition cursor-pointer"><i class="fa-solid fa-minus mr-1"></i>ลดคอร์ด</button>
                         </div>
                     </div>
 
@@ -176,41 +168,12 @@
         </div>
     </div>
 
-    <!-- ================= MODAL SECTION ================= -->
-    
-    <!-- Modal: แจ้งเตือนทั่วไป (เพิ่มเข้ามาให้สมบูรณ์) -->
-    <div id="notificationModal" class="fixed inset-0 bg-black/75 hidden items-center justify-center z-[70] p-4">
-        <div class="bg-slate-800 border border-slate-700 w-full max-w-sm rounded-xl p-5 shadow-2xl text-center toast-notification relative">
-            <button onclick="closeNotification()" class="absolute top-3 right-3 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-            <div class="mb-3">
-                <i id="notificationIcon" class="fa-solid fa-circle-info text-4xl text-amber-400"></i>
-            </div>
-            <h3 id="notificationText" class="text-lg font-bold text-slate-200 mb-2">แจ้งเตือน</h3>
-            <p id="notificationMessage" class="text-sm text-slate-400 mb-4">ข้อความแจ้งเตือน</p>
-            <button onclick="closeNotification()" class="w-full bg-slate-700 hover:bg-slate-600 py-2 rounded-lg text-sm font-semibold text-white transition">ตกลง</button>
-        </div>
-    </div>
-
-    <!-- Modal: แจ้งเตือน 5 นาทีแบบ Custom -->
-    <div id="confirm5MinModal" class="fixed inset-0 bg-black/75 hidden items-center justify-center z-[60] p-4">
-        <div class="bg-slate-800 border border-slate-700 w-full max-w-sm rounded-xl p-6 shadow-2xl text-center toast-notification">
-            <div class="mb-4">
-                <i class="fa-solid fa-clock text-5xl text-amber-500 animate-pulse"></i>
-            </div>
-            <h3 class="text-xl font-bold text-amber-400 mb-2">จบเกมแล้วแน่นะวิ!</h3>
-            <p class="text-sm text-slate-300 mb-6">เกมนี้เพิ่งเริ่มไปได้ไม่นาน คุณแน่ใจหรือไม่ว่าเกมจบแล้วจริงๆ และต้องการบันทึกสถิติ?</p>
-            <div class="flex gap-3">
-                <button onclick="confirmFinishGameEarly()" class="flex-1 bg-amber-600 hover:bg-amber-700 py-2.5 rounded-lg text-sm font-semibold text-white transition shadow-lg">ยืนยัน จบเกม</button>
-                <button onclick="closeModal('confirm5MinModal')" class="flex-1 bg-slate-700 hover:bg-slate-600 py-2.5 rounded-lg text-sm font-semibold text-slate-300 transition">ยกเลิก</button>
-            </div>
-        </div>
-    </div>
-
+    <!-- Modals ทั้งหมด -->
     <div id="historyModal" class="fixed inset-0 bg-black/75 hidden items-center justify-center z-50 p-4">
         <div class="bg-slate-800 border border-slate-700 w-full max-w-md rounded-xl p-5 shadow-2xl">
             <div class="flex justify-between items-center border-b border-slate-700 pb-2 mb-4">
                 <h3 id="historyModalTitle" class="text-lg font-bold text-emerald-400">ประวัติการเล่น</h3>
-                <button onclick="closeModal('historyModal')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+                <button onclick="closeModal('historyModal')" class="text-slate-400 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark text-xl"></i></button>
             </div>
             <div class="max-h-[300px] overflow-y-auto text-sm text-slate-300" id="historyModalBody"></div>
         </div>
@@ -221,9 +184,9 @@
             <h3 class="text-lg font-bold text-rose-400 mb-4"><i class="fa-solid fa-circle-stop mr-2"></i>เลือกรูปแบบการปิดคอร์ด</h3>
             <p class="text-sm text-slate-400 mb-6">กรุณาระบุว่าเกมในสนามนี้เล่นจบแล้วหรือยัง?</p>
             <div class="flex flex-col gap-2">
-                <button id="btnCourtFinishInterrupted" class="bg-amber-600 hover:bg-amber-700 py-2.5 rounded-lg text-sm font-semibold transition text-white">ยังไม่จบเกม (ส่งกลับไปหัวคิวอันดับ 1)</button>
-		        <button id="btnCourtFinishNormal" class="bg-emerald-600 hover:bg-emerald-700 py-2.5 rounded-lg text-sm font-semibold transition text-white">หมดเวลา และเกมจบแล้ว (บันทึกสกอร์)</button>
-                <button onclick="closeModal('closeCourtModal')" class="bg-slate-700 hover:bg-slate-600 py-2 rounded-lg text-sm font-semibold text-slate-300 transition mt-2">ยกเลิก</button>
+                <button id="btnCourtFinishInterrupted" class="bg-amber-600 hover:bg-amber-700 py-2.5 rounded-lg text-sm font-semibold transition cursor-pointer">ยังไม่จบเกม (ส่งกลับไปหัวคิวอันดับ 1)</button>
+		        <button id="btnCourtFinishNormal" class="bg-emerald-600 hover:bg-emerald-700 py-2.5 rounded-lg text-sm font-semibold transition cursor-pointer">หมดเวลา และเกมจบแล้ว (บันทึกสกอร์)</button>
+                <button onclick="closeModal('closeCourtModal')" class="bg-slate-700 hover:bg-slate-600 py-2 rounded-lg text-sm font-semibold text-slate-300 transition mt-2 cursor-pointer">ยกเลิก</button>
             </div>
         </div>
     </div>
@@ -239,27 +202,141 @@
             </div>
 
             <div class="flex gap-2">
-                <button onclick="submitSelectQueueForNewCourt()" class="flex-1 bg-teal-600 hover:bg-teal-700 py-2 rounded-lg text-sm font-semibold transition text-white">รับทราบและส่งลงคอร์ด</button>
-                <button onclick="closeModal('addCourtNotificationModal')" class="bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 transition">ปิดหน้าต่าง</button>
+                <button onclick="submitSelectQueueForNewCourt()" class="flex-1 bg-teal-600 hover:bg-teal-700 py-2 rounded-lg text-sm font-semibold transition cursor-pointer">รับทราบและส่งลงคอร์ด</button>
+                <button onclick="closeModal('addCourtNotificationModal')" class="bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded-lg text-sm font-semibold text-slate-400 transition cursor-pointer">ปิดหน้าต่าง</button>
+            </div>
+        </div>
+    </div>
+	
+    <div id="notificationModal" class="fixed inset-0 bg-black/75 hidden items-center justify-center z-50 p-4">
+        <div class="bg-slate-800 border border-slate-700 w-full max-w-md rounded-xl p-5 shadow-2xl text-center">
+            <div class="mb-3">
+                <span id="notificationIcon" class="text-3xl"><i class="fa-solid fa-circle-info text-amber-400"></i></span>
+            </div>
+            <h3 id="notificationText" class="text-lg font-bold text-white mb-2">แจ้งเตือน</h3>
+            <div id="notificationMessage" class="text-sm text-slate-300 mb-5 text-left bg-slate-900/60 p-3 rounded-lg border border-slate-700/50">
+            </div>
+            
+            <div id="notificationButtons" class="flex gap-2">
+                <button id="btnNotiCancel" onclick="cancelPendingMatch()" class="hidden flex-1 bg-rose-600 hover:bg-rose-700 py-2 rounded-lg text-sm font-semibold text-white transition cursor-pointer">
+                    <i class="fa-solid fa-xmark mr-1"></i>ยกเลิก
+                </button>
+                <button id="btnNotiConfirm" onclick="confirmPendingMatch()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 py-2 rounded-lg text-sm font-semibold text-white transition cursor-pointer">
+                    <i class="fa-solid fa-check mr-1"></i>ตกลง
+                </button>
             </div>
         </div>
     </div>
 
+    <div id="restWarningModal" class="fixed inset-0 bg-black/75 hidden items-center justify-center z-50 p-4">
+        <div class="bg-slate-800 border border-slate-700 w-full max-w-md rounded-xl p-5 shadow-2xl text-center">
+            <div class="mb-3">
+                <span class="text-3xl"><i class="fa-solid fa-bed text-amber-400"></i></span>
+            </div>
+            <h3 class="text-lg font-bold text-white mb-1">แจ้งเตือนผู้เล่นพัก (Rest)</h3>
+            <p class="text-xs text-slate-400 mb-4">พบผู้เล่นที่อยู่ในสถานะพัก (Rest) ต่อเนื่องตั้งแต่ 2 รอบการสุ่มขึ้นไป:</p>
+            
+            <div id="restWarningList" class="max-h-[220px] overflow-y-auto space-y-2 bg-slate-900/60 p-3 rounded-lg border border-slate-700/50 mb-5 text-left"></div>
+
+            <div class="flex gap-2">
+                <button onclick="setAllRestingPlayersReady()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 py-2 rounded-lg text-sm font-semibold text-white transition cursor-pointer">
+                    <i class="fa-solid fa-user-check mr-1"></i>เปลี่ยนเป็น Ready ทั้งหมด
+                </button>
+                <button onclick="closeModal('restWarningModal')" class="bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded-lg text-sm font-semibold text-slate-300 transition cursor-pointer">
+                    พักต่อ
+                </button>
+            </div>
+        </div>
+    </div>
+
+	<!-- Modal แสดงประวัติเกมรายบุคคล -->
+	<div id="playerHistoryModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    		<div class="bg-slate-900 border border-slate-700 rounded-xl max-w-md w-full p-5 shadow-2xl flex flex-col max-h-[85vh]">
+      	  <div class="flex justify-between items-center pb-3 border-b border-slate-800 mb-3">
+            <h3 class="text-base font-bold text-amber-400 flex items-center gap-2">
+                <i class="fa-solid fa-clock-rotate-left"></i> ประวัติการเล่น: <span id="historyPlayerName" class="text-white"></span>
+            </h3>
+            <button onclick="closePlayerHistoryModal()" class="text-slate-400 hover:text-white text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        
+        <div id="historyListContainer" class="overflow-y-auto space-y-2.5 pr-1 flex-1 text-xs">
+            <!-- รายการประวัติแต่ละเกมจะมาแสดงที่นี่ -->
+        </div>
+
+        <div class="mt-4 pt-3 border-t border-slate-800 flex justify-end">
+            <button onclick="closePlayerHistoryModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-4 py-1.5 rounded-lg text-xs font-semibold">
+                ปิด
+            </button>
+        </div>
+    </div>
+</div>
+
 
     <script>
-        // โครงสร้างข้อมูลหลัก
         let players = [];
         let queues = []; 
         let courts = [
-            { id: 1, name: "คอร์ด 1", teamA: [null, null], teamB: [null, null], emergency: false, isActive: true, startTime: null },
-            { id: 2, name: "คอร์ด 2", teamA: [null, null], teamB: [null, null], emergency: false, isActive: true, startTime: null }
+            { id: 1, name: "คอร์ด 1", teamA: [null, null], teamB: [null, null], emergency: false, isActive: true },
+            { id: 2, name: "คอร์ด 2", teamA: [null, null], teamB: [null, null], emergency: false, isActive: true }
         ];
         let newlyAddedCourtId = null;
         let notificationTimeout = null;
+        let pendingMatchData = null;
+        let isQueuePaused = false;
+        let targetCloseCourtId = null;
+        let isEditGamesMode = false;
 
-        // ตัวแปรสำหรับจับสถานะรอจบเกมกรณี < 5 นาที
-        let pendingFinishCourtId = null;
-        let pendingCloseCourt = false;
+// ฟังก์ชันบันทึกข้อมูลเพื่อนร่วมสนามเมื่อจบเกม (ควรเรียกใช้ใน finishGame)
+// *หมายเหตุ: หากในระบบเดิมมี matchHistory หรือ gameLogs อยู่แล้ว สามารถปรับใช้ตามโครงสร้างเดิมได้เลย*
+function openPlayerHistory(playerId) {
+    let player = players.find(p => p.id === playerId);
+    if (!player) return;
+
+    document.getElementById('historyPlayerName').innerText = `${player.name} (${player.gender})`;
+    const container = document.getElementById('historyListContainer');
+    container.innerHTML = '';
+
+    // ดึงประวัติเกมที่มีผู้เล่นคนนี้เข้าร่วม (สมมติว่าเก็บบันทึกไว้ใน matchHistory)
+    // หากไม่มี matchHistory สามารถดึงจากรายการเกมที่เคยบันทึกไว้ได้
+    let playerGames = (window.matchHistory || []).filter(game => 
+        game.players && game.players.some(p => p.id === playerId)
+    );
+
+    if (playerGames.length === 0) {
+        container.innerHTML = `
+            <div class="text-center text-slate-500 py-8">
+                ยังไม่มีประวัติการแข่งของผู้เล่นคนนี้
+            </div>
+        `;
+    } else {
+        playerGames.forEach((game, index) => {
+            // ดึงรายชื่อผู้เล่นในเกมนั้นทั้ง 4 คน
+            let names = game.players.map(p => p.name).join(' ');
+
+            let div = document.createElement('div');
+            div.className = 'bg-slate-950 p-2.5 rounded-lg border border-slate-800 flex flex-col gap-1';
+            div.innerHTML = `
+                <div class="font-bold text-amber-400">
+                    เกม ${index + 1} (ของ${player.name}):
+                </div>
+                <div class="text-white text-xs pl-2">
+                    ${names}
+                </div>
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    document.getElementById('playerHistoryModal').classList.remove('hidden');
+}
+
+function closePlayerHistoryModal() {
+    document.getElementById('playerHistoryModal').classList.add('hidden');
+}
+
+
 
         function init() {
             const container = document.getElementById('playerInputList');
@@ -271,53 +348,106 @@
                 c.teamA = [null, null];
                 c.teamB = [null, null];
                 c.emergency = false;
-                c.startTime = null;
             });
             
-            const playerNames = ['มิว', 'อาท', 'น้าดำ', 'มาย', 'นิ้ง', 'ตั้ม', 'น้ำแข็ง', 'เก่ง', 'มัดหมี่', 'ก้อง', 'น่ง', 'มิกซ์', 'เมย์', 'นะ', 'เดียร์', 'อาโย', 'แบม', 'บอม', 'พี่โต้ง', 'พี่แชมป์'];
+            const initialPlayers = [
+                { name: 'พี่มิว', gender: 'W' },
+                { name: 'พี่อาท', gender: 'M' },
+                { name: 'พี่มิกซ์', gender: 'M' },
+                { name: 'พี่เมย์', gender: 'W' },
+                { name: 'น้าดำ', gender: 'M' },
+                { name: 'อาออฟ', gender: 'M' },
+                { name: 'อาโย', gender: 'M' },
+                { name: 'มาย', gender: 'M' },
+                { name: 'นิ้ง', gender: 'W' },
+                { name: 'ตั้ม', gender: 'M' },
+                { name: 'น้ำแข็ง', gender: 'W' },
+                { name: 'เก่ง', gender: 'M' },
+                { name: 'มัดหมี่', gender: 'W' },
+                { name: 'พี่นะ', gender: 'M' },
+                { name: 'พี่โต้ง', gender: 'M' },
+                { name: 'บูม', gender: 'M' },
+                { name: 'พี่โอ', gender: 'M' },
+                { name: 'พี่เดียร์', gender: 'M' },
+            ];
             
-            for (let i = 0; i < playerNames.length; i++) {
+            for (let i = 0; i < initialPlayers.length; i++) {
                 players.push({
                     id: i + 1,
-                    name: playerNames[i],
-                    level: 'L2',
+                    name: initialPlayers[i].name,
+                    gender: initialPlayers[i].gender,
                     gamesPlayed: 0,
                     history: {}, 
+                    encounterHistory: {},
+                    mixedCount: 0,
                     status: 'ready', 
-                    cooldown: 0
+                    cooldown: 0,
+                    restRounds: 0
                 });
             }
+
             renderPlayerInputs();
-            renderStats();
+            renderStatsSummary();
             renderCourts();
             renderQueue();
             updatePlayerCount();
         }
 
         function updatePlayerCount() {
-            const count = players.length;
-            document.getElementById('playerCount').textContent = count;
+            document.getElementById('playerCount').textContent = players.length;
         }
 
-        function showNotification(title, message, iconClass = 'fa-circle-info', bgColor = 'amber') {
+        function showNotification(title, messageHtml, iconClass = 'fa-circle-info', bgColor = 'amber', showCancelBtn = false) {
             const modal = document.getElementById('notificationModal');
-            const iconElement = document.getElementById('notificationIcon');
             const titleElement = document.getElementById('notificationText');
             const messageElement = document.getElementById('notificationMessage');
+            const iconElement = document.getElementById('notificationIcon');
+            const btnConfirm = document.getElementById('btnNotiConfirm');
+            const btnCancel = document.getElementById('btnNotiCancel');
 
             titleElement.textContent = title;
-            messageElement.textContent = message;
-            iconElement.className = `fa-solid ${iconClass} text-${bgColor}-400`;
+            messageElement.innerHTML = messageHtml; 
+
+            if (iconElement) {
+                iconElement.innerHTML = `<i class="fa-solid ${iconClass} text-4xl text-${bgColor}-400"></i>`;
+            }
+
+            if (showCancelBtn) {
+                btnCancel.classList.remove('hidden');
+                btnConfirm.innerText = 'ตกลง';
+                btnConfirm.onclick = confirmPendingMatch;
+            } else {
+                btnCancel.classList.add('hidden');
+                btnConfirm.innerText = 'รับทราบ';
+                btnConfirm.onclick = closeNotification;
+            }
 
             modal.classList.remove('hidden');
             modal.classList.add('flex');
 
-            if (notificationTimeout) {
-                clearTimeout(notificationTimeout);
+            if (notificationTimeout) clearTimeout(notificationTimeout);
+        }
+
+        function confirmPendingMatch() {
+            if (pendingMatchData) {
+                pendingMatchData.newQueues.forEach(q => queues.push(q));
+                pendingMatchData.affectedPlayers.forEach(id => {
+                    let p = players.find(x => x.id === id);
+                    if (p) p.status = 'queued';
+                });
+
+                pendingMatchData = null;
+                renderPlayerInputs();
+                renderQueue();
+                autoFillEmptyCourts();
+                updateRestRoundsAndCheck();
             }
-            notificationTimeout = setTimeout(() => {
-                closeNotification();
-            }, 5000);
+            closeNotification();
+        }
+
+        function cancelPendingMatch() {
+            pendingMatchData = null;
+            closeNotification();
         }
 
         function closeNotification() {
@@ -331,58 +461,239 @@
 
         function addPlayerFromInput() {
             const nameInput = document.getElementById('newPlayerName');
-            const levelSelect = document.getElementById('newPlayerLevel');
-            const name = nameInput.value && nameInput.value.trim();
-            const level = levelSelect.value || 'L2';
+            const genderSelect = document.getElementById('newPlayerGender');
+
+            let name = nameInput.value && nameInput.value.trim();
+            const gender = (genderSelect && genderSelect.value) ? genderSelect.value : 'M';
+
             if (!name) {
                 showNotification('แจ้งเตือน', 'กรุณากรอกชื่อผู้เล่นก่อนกดเพิ่ม', 'fa-exclamation-circle', 'rose');
                 return;
             }
-            let nextId = players.length > 0 ?
-            Math.max(...players.map(p => p.id)) + 1 : 1;
+
+            let nextId = players.length > 0 ? Math.max(...players.map(p => p.id)) + 1 : 1;
+            
             const newPlayer = {
-                id: nextId,
-                name,
-                level,
+                id: nextId, 
+                name: name, 
+                gender: gender, 
                 gamesPlayed: 0,
-                history: {},
+                history: {},            
+                encounterHistory: {},   
+                mixedCount: 0,
                 status: 'ready',
-                cooldown: 0
+                cooldown: 0,
+                restRounds: 0
             };
+            
             players.push(newPlayer);
+            
             nameInput.value = '';
-            levelSelect.value = 'L2';
+            if (genderSelect) genderSelect.value = 'M';
+            
             renderPlayerInputs();
-            renderStats();
+            renderStatsSummary();
             updatePlayerCount();
         }
 
-        function renderPlayerInputs() {
+        function toggleFriendzone(id) {
+            let p = players.find(x => x.id === id);
+            if(p) {
+                if(p.name.includes('🏋')) {
+                    p.name = p.name.replace(/\s*🏋/g, ''); 
+                } else {
+                    p.name = p.name.trim() + ' 🏋';
+                }
+                renderPlayerInputs();
+                renderStatsSummary();
+                renderCourts();
+                renderQueue();
+            }
+        }
+
+        // โครงสร้างข้อมูล Object ของแต่ละคอร์ด
+/*
+const court = {
+    id: 1,
+    status: 'กำลังแข่ง',
+    courtPlayers: [], // เก็บรายชื่อผู้เล่นในคอร์ดนี้ (เช่น ['เก่ง', 'มาย', 'นิ้ง', 'พี่เดียร์'])
+    teamA: ['', ''],  // ค่าเริ่มต้นเป็นค่าว่าง เพื่อให้ Dropdown แสดง <ว่าง>
+    teamB: ['', '']   // ค่าเริ่มต้นเป็นค่าว่าง เพื่อให้ Dropdown แสดง <ว่าง>
+};
+*/
+
+// Logic ตอนสุ่มแบ่งทีม/ลงคอร์ด
+function randomizeTeams() {
+    const availablePlayers = allPlayers.filter(p => p.isReady);
+    const shuffled = [...availablePlayers].sort(() => Math.random() - 0.5);
+
+    courts.forEach((court, courtIndex) => {
+        // ดึงผู้เล่นมาคอร์ดละ 4 คน (ถ้ามีพอ)
+        const playersForThisCourt = shuffled.slice(courtIndex * 4, (courtIndex + 1) * 4);
+        
+        // ใส่รายชื่อผู้เล่นด้านบน (4 คน)
+        court.courtPlayers = playersForThisCourt.map(p => ({ name: p.name, gender: p.gender })); 
+        
+        // บังคับให้ Dropdown ใน ทีม A และ ทีม B เป็น "<ว่าง>" ทั้งหมด
+        court.teamA = ['', '']; 
+        court.teamB = ['', ''];
+    });
+
+    renderCourts();
+}
+
+// ฟังก์ชัน Render ช่อง Select ของแต่ละทีม
+function renderTeamSelect(court, teamName, index) {
+    // ดึงค่าปัจจุบันที่เลือกไว้ (ถ้าไม่มีให้เป็นค่าว่าง '')
+    const currentValue = court[teamName][index] || '';
+
+    // ดึงรายชื่อ 4 คนจากคอร์ดนี้มาทำเป็นตัวเลือก
+    const optionsHTML = court.courtPlayers.map(player => {
+        const selected = player.name === currentValue ? 'selected' : '';
+        return `<option value="${player.name}" ${selected}>${player.name}</option>`;
+    }).join('');
+
+    return `
+        <select onchange="updateTeamPlayer(${court.id}, '${teamName}', ${index}, this.value)">
+            <option value="" ${currentValue === '' ? 'selected' : ''}>&lt;ว่าง&gt;</option>
+            ${optionsHTML}
+        </select>
+    `;
+}
+
+// ฟังก์ชันเมื่อมีการเลือกผู้เล่นจาก Dropdown
+function updateTeamPlayer(courtId, teamName, index, value) {
+    const court = courts.find(c => c.id === courtId);
+    if (court) {
+        court[teamName][index] = value;
+        renderCourts(); // อัปเดตหน้าจอ
+    }
+}
+
+	function renderPlayerInputs() {
             const container = document.getElementById('playerInputList');
             container.innerHTML = '';
-            players.filter(p => p.status === 'ready' || p.status === 'rest').forEach((p, idx) => {
+            players.filter(p => p.status === 'ready' || p.status === 'rest').forEach((p) => {
                 const tr = document.createElement('tr');
                 tr.className = "border-b border-slate-800 text-xs";
+
+                let restBadge = (p.status === 'rest' && p.restRounds > 0) ? ` (${p.restRounds} รอบ)` : '';
+                let btnClass = p.status === 'ready' 
+                    ? 'bg-emerald-950 text-emerald-400 border border-emerald-800' 
+                    : (p.restRounds >= 2 
+                        ? 'bg-amber-950 text-amber-400 border border-amber-600 animate-pulse' 
+                        : 'bg-slate-700 text-slate-400');
+
                 tr.innerHTML = `
-                    <td class="py-1.5 font-medium text-slate-200">
-                         <input type="text" value="${p.name}" onchange="updatePlayerName(${p.id}, this.value)" class="bg-slate-950 border border-slate-700 rounded px-1 py-0.5 w-28 text-emerald-400">
-                        <button onclick="deletePlayer(${p.id})" title="ลบผู้เล่น" class="ml-2 text-xs text-rose-400 hover:text-rose-300"><i class="fa-solid fa-trash-can"></i></button>
+                    <td class="py-1.5 font-medium text-slate-200 flex items-center gap-1">
+                        <input type="text" value="${p.name}" onchange="updatePlayerName(${p.id}, this.value)" class="bg-slate-950 border border-slate-700 rounded px-1 py-0.5 w-28 text-emerald-400">
+                        <button onclick="deletePlayer(${p.id})" title="ลบผู้เล่น" class="ml-1 text-xs text-rose-400 hover:text-rose-300 cursor-pointer"><i class="fa-solid fa-trash-can"></i></button>
+                        <button onclick="toggleFriendzone(${p.id})" title="สลับสถานะ Friendzone" class="text-sm transition-all cursor-pointer ${p.name.includes('🏋') ? 'opacity-100 drop-shadow-[0_0_5px_rgba(236,72,153,0.8)]' : 'opacity-30 grayscale'}">🏋</button>
                     </td>
                     <td class="py-1.5">
-                        <select onchange="updatePlayerLevel(${p.id}, this.value)" class="bg-slate-950 border border-slate-700 rounded px-1 py-0.5 text-slate-300">
-                            <option value="L1" ${p.level === 'L1' ? 'selected' : ''}>L1 (ใหม่)</option>
-                            <option value="L2" ${p.level === 'L2' ? 'selected' : ''}>L2 (ทั่วไป)</option>
-                            <option value="L3" ${p.level === 'L3' ? 'selected' : ''}>L3 (แบก)</option>
+                        <select onchange="updatePlayerGender(${p.id}, this.value)" class="bg-slate-950 border border-slate-700 rounded px-1 py-0.5 text-slate-300">
+                            <option value="M" ${p.gender === 'M' ? 'selected' : ''}>ชาย (M)</option>
+                            <option value="W" ${p.gender === 'W' ? 'selected' : ''}>หญิง (W)</option>
                         </select>
                     </td>
                     <td class="py-1.5 text-center">
-                        <button onclick="togglePlayerStatus(${p.id})" class="px-2 py-0.5 rounded text-[10px] font-bold ${p.status === 'ready' ? 'bg-emerald-950 text-emerald-400 border border-emerald-800' : 'bg-slate-700 text-slate-400'}">
-                            ${p.status === 'ready' ? 'Ready' : 'Rest'}
+                        <button onclick="togglePlayerStatus(${p.id})" class="px-2 py-0.5 rounded text-[10px] font-bold cursor-pointer ${btnClass}">
+                            ${p.status === 'ready' ? 'Ready' : 'Rest' + restBadge}
                         </button>
                     </td>
                 `;
                 container.appendChild(tr);
             });
+        }
+
+        function toggleQueuePause() {
+            isQueuePaused = !isQueuePaused;
+            const btn = document.getElementById('btnQueuePause');
+            if (isQueuePaused) {
+                btn.className = "bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-3 py-2 rounded-lg text-sm shadow transition flex items-center gap-1.5 cursor-pointer";
+                btn.innerHTML = `<i class="fa-solid fa-circle-pause"></i> รอ: ON`;
+            } else {
+                btn.className = "bg-slate-700 hover:bg-slate-600 text-slate-300 font-bold px-3 py-2 rounded-lg text-sm shadow transition flex items-center gap-1.5 cursor-pointer";
+                btn.innerHTML = `<i class="fa-solid fa-circle-play"></i> รอ: OFF`;
+            }
+        }
+
+        function updateRestRoundsAndCheck() {
+            let longRestingPlayers = [];
+            players.forEach(p => {
+                if (p.status === 'rest') {
+                    p.restRounds = (p.restRounds || 0) + 1;
+                    if (p.restRounds >= 2) {
+                        longRestingPlayers.push(p);
+                    }
+                } else {
+                    p.restRounds = 0;
+                }
+            });
+
+            if (longRestingPlayers.length > 0) {
+                openRestWarningModal(longRestingPlayers);
+            }
+        }
+
+        function openRestWarningModal(restingList) {
+            renderRestWarningList(restingList);
+            const modal = document.getElementById('restWarningModal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
+        }
+
+        function renderRestWarningList(restingList) {
+            const container = document.getElementById('restWarningList');
+            if (!container) return;
+
+            let currentResting = restingList || players.filter(p => p.status === 'rest' && p.restRounds >= 2);
+
+            if (currentResting.length === 0) {
+                closeModal('restWarningModal');
+                return;
+            }
+
+            container.innerHTML = '';
+            currentResting.forEach(p => {
+                const div = document.createElement('div');
+                div.className = "flex justify-between items-center bg-slate-800 p-2.5 rounded-lg border border-slate-700 text-xs";
+                div.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <span class="text-amber-400 font-bold"><i class="fa-solid fa-bed mr-1"></i>${p.name} (${p.gender})</span>
+                        <span class="text-[10px] bg-slate-900 px-1.5 py-0.5 rounded text-slate-400">พักมา ${p.restRounds} รอบ</span>
+                    </div>
+                    <button onclick="setSinglePlayerReady(${p.id})" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1 rounded text-xs font-semibold transition flex items-center gap-1 cursor-pointer">
+                        <i class="fa-solid fa-check text-[10px]"></i> Ready
+                    </button>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function setSinglePlayerReady(id) {
+            let p = players.find(x => x.id === id);
+            if (p) {
+                p.status = 'ready';
+                p.restRounds = 0;
+            }
+            renderPlayerInputs();
+            renderStatsSummary();
+            renderRestWarningList();
+        }
+
+        function setAllRestingPlayersReady() {
+            players.forEach(p => {
+                if (p.status === 'rest' && p.restRounds >= 2) {
+                    p.status = 'ready';
+                    p.restRounds = 0;
+                }
+            });
+            renderPlayerInputs();
+            renderStatsSummary();
+            closeModal('restWarningModal');
         }
 
         function deletePlayer(id) {
@@ -400,23 +711,23 @@
             renderPlayerInputs();
             renderQueue();
             renderCourts();
-            renderStats();
+            renderStatsSummary();
             updatePlayerCount();
         }
 
         function updatePlayerName(id, val) {
             let p = players.find(x => x.id === id);
             if(p) p.name = val;
-            renderStats();
+            renderStatsSummary();
             renderCourts();
             renderQueue();
             renderPlayerInputs();
         }
 
-        function updatePlayerLevel(id, val) {
+        function updatePlayerGender(id, val) {
             let p = players.find(x => x.id === id);
-            if(p) p.level = val;
-            renderStats();
+            if(p) p.gender = val;
+            renderStatsSummary();
         }
 
         function togglePlayerStatus(id) {
@@ -428,27 +739,11 @@
         }
 
         function renderStats() {
-            const container = document.getElementById('statsSummary');
-            container.innerHTML = '';
-            let sortedPlayers = [...players].sort((a,b) => a.gamesPlayed - b.gamesPlayed);
-            sortedPlayers.forEach(p => {
-                const hasRepeatPair = Object.values(p.history).some(cnt => cnt >= 2);
-                const badgeClass = hasRepeatPair
-                    ? "bg-red-900/40 text-red-300 px-2 py-0.5 rounded-full font-bold border border-red-500/60 cursor-pointer"
-                    : "bg-emerald-900/50 text-emerald-400 px-2 py-0.5 rounded-full font-bold border border-emerald-800/60 cursor-pointer";
-
-                const div = document.createElement('div');
-                div.className = "flex justify-between items-center py-1.5 cursor-pointer hover:bg-slate-800 px-1 rounded transition";
-                div.setAttribute('onclick', `showIndividualHistory(${p.id})`);
-                div.innerHTML = `
-                     <span class="font-medium text-slate-300">${p.name} <span class="text-[10px] px-1 bg-slate-700 rounded text-amber-400">${p.level}</span></span>
-                    <span class="${badgeClass}">${p.gamesPlayed} เกม</span>
-                `;
-                container.appendChild(div);
-            });
+            renderStatsSummary();
         }
 
-        const getLvlValue = (p) => (p.level === 'L3' ? 3 : p.level === 'L2' ? 2 : 1);
+        const getGenderValue = (p) => (p.gender === 'M' ? 1 : 0);
+
         function combinations(arr, k) {
             const results = [];
             function helper(start, combo) {
@@ -490,7 +785,7 @@
             let hasEmptyCourt = courts.some(c => c.isActive && !c.teamA[0] && !c.teamA[1] && !c.teamB[0] && !c.teamB[1]);
             
             if (!hasEmptyCourt || queues.length > 0) {
-                showNotification('ไม่สามารถจัดคิวได้', 'จะกดสุ่มคิวได้ก็ต่อเมื่อมีคอร์ดในสนามว่างอย่างน้อย 1 คอร์ด และระบบไม่มีคิวรออยู่เท่านั้น (โปรดรอให้ผู้เล่นกดจบเกมก่อน)', 'fa-ban', 'rose');
+                showNotification('ไม่สามารถจัดคิวได้', 'จะกดสุ่มคิวได้ก็ต่อเมื่อมีคอร์ดในสนามว่างอย่างน้อย 1 คอร์ด และระบบไม่มีคิวรออยู่เท่านั้น', 'fa-ban', 'rose');
                 return;
             }
 
@@ -498,7 +793,7 @@
             autoFillEmptyCourts();
 
             if (queues.length > 0) {
-                showNotification('แจ้งเตือน', 'มีคิวรออยู่ในระบบ ระบบจะเติมคิวเดิมลงสนามก่อน และจะไม่สร้างคิวใหม่จนกว่าจะหมดคิวเดิม', 'fa-clock', 'amber');
+                showNotification('แจ้งเตือน', 'มีคิวรออยู่ในระบบ ระบบจะเติมคิวเดิมลงสนามก่อน', 'fa-clock', 'amber');
                 renderQueue();
                 return;
             }
@@ -507,76 +802,189 @@
             courts.forEach(c => {
                 [...c.teamA, ...c.teamB].forEach(p => { if (p) busyPlayerIds.push(p.id); });
             });
+            
             let available = players.filter(p => p.status === 'ready' && !busyPlayerIds.includes(p.id) && (!p.cooldown || p.cooldown === 0));
+            
             if (available.length < 4) {
-                showNotification('จำนวนผู้เล่นไม่เพียงพอ', `จำนวนผู้เล่นที่พร้อมเล่นอยู่นอกสนาม มีไม่เพียงพอสำหรับการจัดทีมคู่ (อย่างน้อยต้องการ 4 คน) ปัจจุบันมี ${available.length} คน`, 'fa-users', 'rose');
+                showNotification('จำนวนผู้เล่นไม่เพียงพอ', `จำนวนผู้เล่นพร้อมเล่นนอกสนามมีเพียง ${available.length} คน (ต้องการอย่างน้อย 4 คน)`, 'fa-users', 'rose');
                 return;
             }
 
-            shuffleArray(available);
+            const weightTotalGames = 10000;
+            const weightGamesRange = 5000;
+            const weightEncounter  = 20000;
 
-            const weightRepeat = 100000;
-            const weightTotalGames = 5000;   
-            const weightGamesRange = 2000;   
-            const weightBalance = 100;
-            while (available.length >= 4) {
-                const combos = combinations(available, 4);
-                let bestChoice = null;
-                let bestScore = Infinity;
+            let bestGlobalMatch = null;
+            let bestGlobalScore = Infinity;
 
-                combos.forEach(group => {
-                    const sumGames = group.reduce((sum, p) => sum + p.gamesPlayed, 0);
-                    const games = group.map(p => p.gamesPlayed);
-                    const gamesRange = Math.max(...games) - Math.min(...games); 
+            const TRIALS = 300;
 
-                     const pairings = [
-                        { A: [group[0], group[1]], B: [group[2], group[3]] },
-                        { A: [group[0], group[2]], B: [group[1], group[3]] },
-                        { A: [group[0], group[3]], B: [group[1], group[2]] }
-                    ];
-
-                    pairings.forEach(setup => {
-                        const repeatA = setup.A[0].history[setup.A[1].id] || 0;
-                         const repeatB = setup.B[0].history[setup.B[1].id] || 0;
-                        const totalRepeat = repeatA + repeatB;
-
-                        const skillA = getLvlValue(setup.A[0]) + getLvlValue(setup.A[1]);
-                        const skillB = getLvlValue(setup.B[0]) + getLvlValue(setup.B[1]);
-                        const balanceDiff = Math.abs(skillA - skillB);
-
-                        const score = (totalRepeat * weightRepeat) + 
-                                      (sumGames * weightTotalGames) + 
-                                      (gamesRange * weightGamesRange) + 
-                                      (balanceDiff * weightBalance) + 
-                                      Math.random();
-                        if (score < bestScore) {
-                            bestScore = score;
-                            bestChoice = { group, setup, score };
-                        }
-                    });
+            for (let t = 0; t < TRIALS; t++) {
+                let pool = [...available].sort((a, b) => {
+                    if (a.gamesPlayed !== b.gamesPlayed) {
+                        return a.gamesPlayed - b.gamesPlayed;
+                    }
+                    return Math.random() - 0.5;
                 });
 
-                if (!bestChoice) break;
+                let currentTrialQueues = [];
+                let currentTrialScore = 0;
 
-                bestChoice.setup.A.forEach(p => { let pp = players.find(x => x.id === p.id); if (pp) { pp.status = 'queued'; } });
-                bestChoice.setup.B.forEach(p => { let pp = players.find(x => x.id === p.id); if (pp) { pp.status = 'queued'; } });
+                while (pool.length >= 4) {
+                    let bestGroup = null;
+                    let bestGroupScore = Infinity;
+
+                    let searchLimit = Math.min(pool.length, 8); 
+                    let foundValidGroup = false;
+
+                    for (let i = 0; i < searchLimit; i++) {
+                        for (let j = i + 1; j < searchLimit; j++) {
+                            for (let k = j + 1; k < searchLimit; k++) {
+                                for (let l = k + 1; l < searchLimit; l++) {
+                                    let group = [pool[i], pool[j], pool[k], pool[l]];
+
+                                    let femaleCount = group.filter(p => p.gender === 'W').length;
+                                    if (femaleCount > 2) continue; 
+
+                                    const sumGames = group.reduce((sum, p) => sum + p.gamesPlayed, 0);
+                                    const games = group.map(p => p.gamesPlayed);
+                                    const gamesRange = Math.max(...games) - Math.min(...games);
+
+                                    let totalEncounter = 0;
+                                    for (let x = 0; x < 4; x++) {
+                                        for (let y = x + 1; y < 4; y++) {
+                                            let p1 = group[x];
+                                            let p2 = group[y];
+                                            if (p1.encounterHistory && p1.encounterHistory[p2.id]) {
+                                                totalEncounter += p1.encounterHistory[p2.id];
+                                            }
+                                        }
+                                    }
+
+                                    let score = (sumGames * weightTotalGames) + 
+                                                (gamesRange * weightGamesRange) + 
+                                                (totalEncounter * weightEncounter) + 
+                                                Math.random();
+
+                                    if (score < bestGroupScore) {
+                                        bestGroupScore = score;
+                                        bestGroup = group;
+                                        foundValidGroup = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    if (!foundValidGroup && pool.length >= 4) {
+                        for (let i = 0; i < pool.length - 3; i++) {
+                            let group = pool.slice(i, i + 4);
+                            let femaleCount = group.filter(p => p.gender === 'W').length;
+                            if (femaleCount <= 2) {
+                                bestGroup = group;
+                                bestGroupScore = 999999;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (bestGroup) {
+                        currentTrialScore += bestGroupScore;
+                        currentTrialQueues.push(bestGroup);
+                        pool = pool.filter(p => !bestGroup.some(bg => bg.id === p.id));
+                    } else {
+                        break;
+                    }
+                }
+
+                if (currentTrialQueues.length > 0 && currentTrialScore < bestGlobalScore) {
+                    bestGlobalScore = currentTrialScore;
+                    bestGlobalMatch = currentTrialQueues;
+                }
+            }
+
+            if (!bestGlobalMatch || bestGlobalMatch.length === 0) {
+                showNotification('ไม่สามารถจัดคิวได้', 'สัดส่วนผู้หญิงและผู้ชายที่เหลืออยู่ไม่สมดุลตามเงื่อนไข (ผู้หญิงเกิน 2 คนต่อกลุ่ม)', 'fa-exclamation-triangle', 'amber');
+                return;
+            }
+
+            bestGlobalMatch.forEach(group => {
                 queues.push({
                     id: Date.now() + Math.random(),
-                    teamA: [bestChoice.setup.A[0].id, bestChoice.setup.A[1].id],
-                    teamB: [bestChoice.setup.B[0].id, bestChoice.setup.B[1].id],
+                    teamA: [group[0].id, group[1].id],
+                    teamB: [group[2].id, group[3].id],
                     isInterrupted: false
-                 });
+                });
 
-                const usedIds = new Set(bestChoice.group.map(p => p.id));
-                available = available.filter(p => !usedIds.has(p.id));
-            }
+                group.forEach(p => {
+                    let playerObj = players.find(x => x.id === p.id);
+                    if (playerObj) playerObj.status = 'queued';
+                });
+            });
 
             renderPlayerInputs();
             renderQueue();
             autoFillEmptyCourts();
+            updateRestRoundsAndCheck();
+        }	
+
+        function openCloseCourtModal(courtId) {
+            targetCloseCourtId = courtId;
+            const modal = document.getElementById('closeCourtModal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
         }
 
-      function renderQueue() {
+        function closeCourtInterrupted() {
+            if (targetCloseCourtId) {
+                let court = courts.find(c => c.id === targetCloseCourtId);
+                if (court) {
+                    let playing = [...court.teamA, ...court.teamB].filter(x => x !== null);
+                    if (playing.length === 4) {
+                        playing.forEach(p => { if (p) p.status = 'queued'; });
+                        let group = {
+                            id: Date.now() + Math.random(),
+                            teamA: [court.teamA[0].id, court.teamA[1].id],
+                            teamB: [court.teamB[0].id, court.teamB[1].id],
+                            isInterrupted: true 
+                        };
+                        queues.unshift(group);
+                    } else {
+                        playing.forEach(p => { if (p) p.status = 'ready'; });
+                    }
+                }
+                
+                courts = courts.filter(c => c.id !== targetCloseCourtId);
+                
+                closeModal('closeCourtModal');
+                renderQueue();
+                renderCourts();
+                renderPlayerInputs();
+                targetCloseCourtId = null;
+            }
+        }
+
+        function closeCourtNormal() {
+            if (targetCloseCourtId) {
+                finishGame(targetCloseCourtId);
+                courts = courts.filter(c => c.id !== targetCloseCourtId);
+                renderCourts();
+                closeModal('closeCourtModal');
+                targetCloseCourtId = null;
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const btnInterrupted = document.getElementById('btnCourtFinishInterrupted');
+            const btnNormal = document.getElementById('btnCourtFinishNormal');
+
+            if (btnInterrupted) btnInterrupted.onclick = closeCourtInterrupted;
+            if (btnNormal) btnNormal.onclick = closeCourtNormal;
+        });
+
+        function renderQueue() {
             const container = document.getElementById('queueContainer');
             const emptyText = document.getElementById('emptyQueueText');
             
@@ -625,14 +1033,14 @@
                     <div class="flex items-center gap-3">
                         ${tagLabel}
                         <div class="text-xs">
-                            <span class="text-emerald-400 font-semibold">${pA1?.name}(${pA1?.level}) + ${pA2?.name}(${pA2?.level})</span>
+                            <span class="text-emerald-400 font-semibold">${pA1?.name}(${pA1?.gender || 'M'}) + ${pA2?.name}(${pA2?.gender || 'M'})</span>
                             <span class="text-slate-400 mx-2">VS</span>
-                            <span class="text-rose-400 font-semibold">${pB1?.name}(${pB1?.level}) + ${pB2?.name}(${pB2?.level})</span>
+                            <span class="text-rose-400 font-semibold">${pB1?.name}(${pB1?.gender || 'M'}) + ${pB2?.name}(${pB2?.gender || 'M'})</span>
                         </div>
                     </div>
                     <div class="flex items-center gap-2">
                         ${courtSelectorHtml}
-                        <button onclick="removeQueue('${q.id}')" class="text-slate-400 hover:text-rose-400 text-sm p-1"><i class="fa-solid fa-trash-can"></i></button>
+                        <button onclick="removeQueue('${q.id}')" class="text-slate-400 hover:text-rose-400 text-sm p-1 cursor-pointer"><i class="fa-solid fa-trash-can"></i></button>
                     </div>
                 `;
                 container.appendChild(div);
@@ -650,7 +1058,7 @@
             queues = queues.filter(q => q.id != qId);
             renderQueue();
             renderPlayerInputs();
-            renderStats();
+            renderStatsSummary();
         }
 
         function sendQueueToCourt(qId, courtId) {
@@ -663,7 +1071,6 @@
                 court.teamA = [players.find(x => x.id === q.teamA[0]), players.find(x => x.id === q.teamA[1])];
                 court.teamB = [players.find(x => x.id === q.teamB[0]), players.find(x => x.id === q.teamB[1])];
                 [...court.teamA, ...court.teamB].forEach(p => { if (p) p.status = 'playing'; });
-                court.startTime = Date.now();
 
                 queues.splice(qIndex, 1);
                 renderQueue();
@@ -672,37 +1079,43 @@
             }
         }
 
-       function autoFillEmptyCourts() {
+        function autoFillEmptyCourts() {
+            renderQueue();
+            renderCourts();
+            renderPlayerInputs();
+
+            if (isQueuePaused) return;
+
             for(let court of courts) {
                 if(court.isActive && !court.teamA[0] && !court.teamA[1] && !court.teamB[0] && !court.teamB[1]) {
                     if(queues.length > 0) {
-                         let q = queues.shift();
+                        let q = queues.shift();
                         court.teamA = [players.find(x => x.id === q.teamA[0]), players.find(x => x.id === q.teamA[1])];
                         court.teamB = [players.find(x => x.id === q.teamB[0]), players.find(x => x.id === q.teamB[1])];
                         [...court.teamA, ...court.teamB].forEach(p => { if (p) p.status = 'playing'; });
-                        court.startTime = Date.now();
                     }
                 }
             }
+
             renderQueue();
             renderCourts();
             renderPlayerInputs();
         }
 
         function addCourt() {
-            let nextId = courts.length > 0 ?
-            Math.max(...courts.map(c => c.id)) + 1 : 1;
+            let nextId = courts.length > 0 ? Math.max(...courts.map(c => c.id)) + 1 : 1;
             let newCourt = {
                 id: nextId,
                 name: `คอร์ด ${nextId}`,
                 teamA: [null, null],
                 teamB: [null, null],
                 emergency: false,
-                 isActive: true,
-                 startTime: null
+                isActive: true
             };
             courts.push(newCourt);
+            
             renderCourts();
+            renderQueue();
             
             newlyAddedCourtId = nextId;
             openAddCourtModal();
@@ -720,7 +1133,7 @@
                     let pA1 = players.find(x => x.id === q.teamA[0]);
                     let pA2 = players.find(x => x.id === q.teamA[1]);
                     let pB1 = players.find(x => x.id === q.teamB[0]);
-                     let pB2 = players.find(x => x.id === q.teamB[1]);
+                    let pB2 = players.find(x => x.id === q.teamB[1]);
                     selectDropdown.innerHTML += `
                         <option value="${q.id}">คิวที่ ${idx+1}: ${pA1?.name}+${pA2?.name} VS ${pB1?.name}+${pB2?.name}</option>
                     `;
@@ -742,14 +1155,14 @@
             newlyAddedCourtId = null;
         }
 
-	    function removeCourt() {
+        function removeCourt() {
             if(courts.length > 0) {
                 let last = courts[courts.length - 1];
                 let isCourtEmpty = !last.teamA[0] && !last.teamA[1] && !last.teamB[0] && !last.teamB[1];
                 
                 if (!isCourtEmpty) {
                     showNotification('ลดคอร์ดไม่ได้', 'คอร์ดล่าสุดยังมีผู้เล่นอยู่ในสนาม กรุณากดจบเกมหรือนำผู้เล่นออกก่อน', 'fa-ban', 'rose');
-                    return; 
+                    return;
                 }
 
                 [...last.teamA, ...last.teamB].forEach(p => { if(p) p.status = 'ready'; });
@@ -757,7 +1170,7 @@
                 renderCourts();
                 renderQueue();
                 renderPlayerInputs();
-                renderStats();
+                renderStatsSummary();
             }
         }
 
@@ -765,14 +1178,6 @@
             let court = courts.find(c => c.id === id);
             if(court) court.name = newName;
             renderQueue(); 
-        }
-
-        function toggleCourtActive(id) {
-            let court = courts.find(c => c.id === id);
-            if(court) {
-                court.isActive = !court.isActive;
-                renderCourts();
-            }
         }
 
         function toggleEmergency(id) {
@@ -792,7 +1197,97 @@
                 if(team === 'B') court.teamB[index] = null;
                 renderCourts();
                 renderPlayerInputs();
+                renderQueue();
             }
+        }
+
+        function clearCourtPlayers(courtId) {
+            let court = courts.find(c => c.id === courtId);
+            if (court) {
+                let playing = [...court.teamA, ...court.teamB].filter(p => p !== null);
+                if (playing.length === 0) return;
+
+                playing.forEach(p => {
+                    p.status = 'ready';
+                });
+
+                court.teamA = [null, null];
+                court.teamB = [null, null];
+
+                renderCourts();
+                renderPlayerInputs();
+                renderQueue();
+            }
+        }
+
+        // ฟังก์ชันสลับคู่ 4 คนเฉพาะสนามนี้
+        function shuffleCourtPlayers(courtId) {
+            let court = courts.find(c => c.id === courtId);
+            if (!court) return;
+
+            let currentPlayers = [...court.teamA, ...court.teamB].filter(p => p !== null);
+            if (currentPlayers.length < 4) {
+                showNotification('สลับคู่ไม่ได้', 'ผู้เล่นในสนามยังไม่ครบ 4 คน', 'fa-exclamation-triangle', 'amber');
+                return;
+            }
+
+            // สุ่มสลับลำดับทั้ง 4 คน
+            currentPlayers = shuffleArray(currentPlayers);
+            court.teamA = [currentPlayers[0], currentPlayers[1]];
+            court.teamB = [currentPlayers[2], currentPlayers[3]];
+
+            renderCourts();
+        }
+
+        // ฟังก์ชันจัดการการเปลี่ยน Dropdown รายชื่อบนสนาม (ป้องกันเลือกซ้ำ)
+        function handleCourtSelectChange(courtId, team, index, selectedIdStr) {
+            let court = courts.find(c => c.id === courtId);
+            if (!court) return;
+
+            if (!selectedIdStr) {
+                // ถ้าเลือกเป็นช่องว่าง/ยกเลิก
+                let oldPlayer = team === 'A' ? court.teamA[index] : court.teamB[index];
+                if (oldPlayer) oldPlayer.status = 'ready';
+                if (team === 'A') court.teamA[index] = null;
+                if (team === 'B') court.teamB[index] = null;
+                renderCourts();
+                renderPlayerInputs();
+                renderQueue();
+                return;
+            }
+
+            let selectedId = parseInt(selectedIdStr);
+            let selectedPlayer = players.find(p => p.id === selectedId);
+
+            let pool = [...court.teamA, ...court.teamB].filter(p => p !== null);
+            let isInsideCourt = pool.some(p => p.id === selectedId);
+
+            if (isInsideCourt) {
+                // ถ้าเป็นคนที่อยู่ในสนามอยู่แล้ว ให้ทำการสลับตำแหน่ง
+                let oldPlayer = team === 'A' ? court.teamA[index] : court.teamB[index];
+
+                // หาตำแหน่งเดิมของ selectedPlayer แล้ววาง oldPlayer ลงไปแทน
+                if (court.teamA[0]?.id === selectedId) court.teamA[0] = oldPlayer;
+                else if (court.teamA[1]?.id === selectedId) court.teamA[1] = oldPlayer;
+                else if (court.teamB[0]?.id === selectedId) court.teamB[0] = oldPlayer;
+                else if (court.teamB[1]?.id === selectedId) court.teamB[1] = oldPlayer;
+
+                // ใส่ selectedPlayer ลงตำแหน่งใหม่
+                if (team === 'A') court.teamA[index] = selectedPlayer;
+                if (team === 'B') court.teamB[index] = selectedPlayer;
+            } else {
+                // ถ้าดึงคนใหม่จากภายนอกเข้ามา
+                let oldPlayer = team === 'A' ? court.teamA[index] : court.teamB[index];
+                if (oldPlayer) oldPlayer.status = 'ready';
+
+                if (team === 'A') court.teamA[index] = selectedPlayer;
+                if (team === 'B') court.teamB[index] = selectedPlayer;
+                selectedPlayer.status = 'playing';
+            }
+
+            renderCourts();
+            renderPlayerInputs();
+            renderQueue();
         }
 
         function renderCourts() {
@@ -801,50 +1296,75 @@
 
             courts.forEach(c => {
                 const div = document.createElement('div');
-                div.className = `bg-slate-900 border rounded-xl p-4 flex flex-col justify-between relative shadow-inner transition ${c.isActive ? 'border-slate-700 opacity-100' : 'border-slate-600 opacity-50'}`;
+                div.className = `bg-slate-900 border rounded-xl p-4 flex flex-col justify-between shadow-inner transition ${c.isActive ? 'border-slate-700 opacity-100' : 'border-slate-600 opacity-50'}`;
                 
                 let isCourtEmpty = !c.teamA[0] && !c.teamA[1] && !c.teamB[0] && !c.teamB[1];
-                let timerHtml = (!isCourtEmpty && c.startTime) ? `<span id="timer-${c.id}" class="text-xs font-mono text-emerald-400 bg-emerald-950/50 px-2 py-0.5 rounded ml-2 shadow-sm border border-emerald-900/50">00:00</span>` : '';
-                let statusLabel = isCourtEmpty ? '<span class="text-xs text-slate-500 bg-slate-800 px-2 py-0.5 rounded">ว่าง</span>' : `<span class="text-xs text-amber-400 bg-amber-950/50 border border-amber-900 px-2 py-0.5 rounded animate-pulse">กำลังแข่ง</span>${timerHtml}`;
-                
-                let toggleBtnIcon = c.isActive ? '<i class="fa-solid fa-circle-check"></i>' : '<i class="fa-solid fa-circle-xmark"></i>';
-                let toggleBtnColor = c.isActive ? 'text-emerald-400 hover:text-emerald-300' : 'text-rose-400 hover:text-rose-300';
+                let statusLabel = isCourtEmpty 
+                    ? '<span class="text-xs text-slate-500 bg-slate-800 px-2 py-0.5 rounded">ว่าง</span>' 
+                    : '<span class="text-xs text-amber-400 bg-amber-950/50 border border-amber-900 px-2 py-0.5 rounded animate-pulse">กำลังแข่ง</span>';
+
+                let currentCourtPlayers = [...c.teamA, ...c.teamB].filter(p => p !== null);
 
                 div.innerHTML = `
-                     <div class="flex justify-between items-center mb-3">
+                    <div class="flex justify-between items-center mb-3 pb-2 border-b border-slate-800">
                         <div class="flex items-center gap-2">
-                            <input type="text" value="${c.name}" onchange="updateCourtName(${c.id}, this.value)" class="bg-transparent border-b border-dashed border-slate-600 focus:border-emerald-400 font-bold text-sm text-slate-200 outline-none w-24" ${!c.isActive ? 'disabled' : ''}>
+                            <input type="text" value="${c.name}" onchange="updateCourtName(${c.id}, this.value)" class="bg-transparent border-b border-dashed border-slate-600 focus:border-emerald-400 font-bold text-sm text-slate-200 outline-none w-20" ${!c.isActive ? 'disabled' : ''}>
                             ${statusLabel}
                         </div>
                         <div class="flex items-center gap-2">
-                             <button onclick="toggleCourtActive(${c.id})" class="transition duration-200 ${toggleBtnColor} text-xl" title="${c.isActive ? 'ปิดคอร์ด' : 'เปิดคอร์ด'}">
-                                ${toggleBtnIcon}
+                            <button onclick="clearCourtPlayers(${c.id})" class="bg-amber-600/20 hover:bg-amber-600 text-amber-400 hover:text-white border border-amber-600/50 text-[10px] px-2 py-0.5 rounded font-bold transition flex items-center gap-1 cursor-pointer" title="เคลียร์ผู้เล่นออกโดยไม่นับเกม">
+                                <i class="fa-solid fa-eraser"></i> Clear
                             </button>
-                            <button onclick="toggleEmergency(${c.id})" class="transition duration-200 ${c.emergency ? 'siren-glowing text-red-500 scale-110' : 'text-slate-600 grayscale opacity-50 hover:opacity-100'}" title="Emergency Mode">
-                                 <i class="fa-solid fa-lightbulb text-xl"></i>
+                            <button onclick="toggleEmergency(${c.id})" class="transition duration-200 cursor-pointer ${c.emergency ? 'siren-glowing text-red-500 scale-110' : 'text-slate-600 grayscale opacity-50 hover:opacity-100'}" title="Emergency Mode">
+                                <i class="fa-solid fa-lightbulb text-lg"></i>
                             </button>
                         </div>
-                     </div>
+                    </div>
 
-                    <div class="grid grid-cols-2 gap-2 border border-slate-800 rounded-lg p-2 bg-slate-950/60 mb-3 relative ${!c.isActive ? 'opacity-50' : ''}">
+		<!-- รายชื่อ 4 คนบนคอร์ด -->
+		${currentCourtPlayers.length > 0 ? `
+   		 <div class="bg-slate-950/80 p-2 rounded-lg mb-2 border border-slate-800/80">
+      	  <div class="text-[10px] text-slate-400 mb-1 font-medium">รายชื่อผู้เล่นในคอร์ดนี้ (${currentCourtPlayers.length}/4)</div>
+       	<div class="grid grid-cols-2 gap-1 text-xs">
+       	     ${currentCourtPlayers.map(p => `
+                <div class="bg-slate-900 px-2 py-0.5 rounded border border-slate-800 flex justify-between">
+                    <span class="truncate text-white">${p.name}</span>
+                    <span class="text-amber-500 font-bold ml-1">${p.gender}</span>
+                </div>
+            `).join('')}
+        </div>
+    </div>
+` : ''}
+
+                    <div class="grid grid-cols-2 gap-3 border border-slate-800 rounded-lg p-2.5 bg-slate-950/60 mb-3 relative ${!c.isActive ? 'opacity-50' : ''}">
                         <div class="flex flex-col gap-1.5">
-                            <div class="text-[11px] font-bold text-center text-emerald-400/80 border-b border-slate-800 pb-1">ทีม A</div>
+                            <div class="text-[11px] font-bold text-center text-emerald-400 border-b border-slate-800 pb-1">ทีม A</div>
                             ${renderSlotHtml(c, 'A', 0)}
                             ${renderSlotHtml(c, 'A', 1)}
                         </div>
               
-                        <div class="absolute inset-y-0 left-1/2 w-[1px] bg-dashed bg-slate-800 pointer-events-none"></div>
+                        <div class="absolute inset-y-0 left-1/2 w-[1px] bg-slate-800 pointer-events-none"></div>
+
                         <div class="flex flex-col gap-1.5">
-                            <div class="text-[11px] font-bold text-center text-rose-400/80 border-b border-slate-800 pb-1">ทีม B</div>
-                             ${renderSlotHtml(c, 'B', 0)}
+                            <div class="text-[11px] font-bold text-center text-rose-400 border-b border-slate-800 pb-1">ทีม B</div>
+                            ${renderSlotHtml(c, 'B', 0)}
                             ${renderSlotHtml(c, 'B', 1)}
                         </div>
                     </div>
 
-                     <div class="flex flex-wrap gap-1.5 mt-auto text-xs ${!c.isActive ? 'opacity-50 pointer-events-none' : ''}">
-                        <button onclick="attemptFinishGame(${c.id}, false)" class="flex-1 bg-emerald-600 hover:bg-emerald-700 py-1.5 rounded font-medium transition text-center text-white font-semibold">จบเกม</button>
-                        <button onclick="openCloseCourtModal(${c.id})" class="flex-1 bg-rose-600 hover:bg-rose-700 py-1.5 rounded font-medium transition text-center text-white font-semibold">ปิดคอร์ด</button>
-                        <button onclick="randomFillSlot(${c.id})" class="w-full bg-slate-800 hover:bg-slate-700 border border-slate-700 py-1.5 rounded font-medium transition text-amber-400"><i class="fa-solid fa-shuffle mr-1"></i>สุ่มเติมคนเฉพาะสนามนี้</button>
+                    <div class="flex flex-col gap-1.5 mt-auto text-xs ${!c.isActive ? 'opacity-50 pointer-events-none' : ''}">
+                        <div class="flex gap-1.5">
+                            <button onclick="finishGame(${c.id})" class="flex-1 bg-emerald-600 hover:bg-emerald-700 py-1.5 rounded font-semibold transition text-white cursor-pointer">จบเกม</button>
+                            <button onclick="openCloseCourtModal(${c.id})" class="flex-1 bg-rose-600 hover:bg-rose-700 py-1.5 rounded font-semibold transition text-white cursor-pointer">ปิดคอร์ด</button>
+                        </div>
+                        <div class="grid grid-cols-2 gap-1.5">
+                            <button onclick="shuffleCourtPlayers(${c.id})" class="w-full bg-slate-800 hover:bg-slate-700 border border-slate-700 py-1.5 rounded font-medium transition text-amber-400 text-[11px] cursor-pointer">
+                                🔀 สลับคู่ 4 คนนี้
+                            </button>
+                            <button onclick="randomFillSlot(${c.id})" class="w-full bg-slate-800 hover:bg-slate-700 border border-slate-700 py-1.5 rounded font-medium transition text-teal-400 text-[11px] cursor-pointer">
+                                <i class="fa-solid fa-shuffle mr-1"></i>สุ่มเติมคน
+                            </button>
+                        </div>
                     </div>
                 `;
                 container.appendChild(div);
@@ -852,74 +1372,53 @@
         }
 
         function renderSlotHtml(court, team, index) {
-             let player = team === 'A' ? court.teamA[index] : court.teamB[index];
-            
-            if (player) {
-                let kickBtn = court.emergency ?
-`<button onclick="kickPlayer(${court.id}, '${team}', ${index})" class="text-red-500 font-bold hover:text-red-400 px-1"><i class="fa-solid fa-circle-xmark"></i></button>` : '';
-                return `
-                    <div class="flex justify-between items-center bg-slate-900 border border-slate-800 rounded px-2 py-1 text-xs text-slate-300">
-                        <span class="truncate">${player.name} <span class="text-[10px] text-amber-500">${player.level}</span></span>
-                        ${kickBtn}
-                     </div>
-                `;
-            } else {
-                let busyPlayerIds = [];
-                courts.forEach(c => {
-                    [...c.teamA, ...c.teamB].forEach(p => { if(p) busyPlayerIds.push(p.id); });
+            let currentPlayer = team === 'A' ? court.teamA[index] : court.teamB[index];
+
+            let busyPlayerIds = [];
+            courts.forEach(c => {
+                [...c.teamA, ...c.teamB].forEach(p => { 
+                    if (p && p.id !== currentPlayer?.id) busyPlayerIds.push(p.id); 
                 });
-                let readyPool = players.filter(p => p.status === 'ready' && !busyPlayerIds.includes(p.id) && (!p.cooldown || p.cooldown === 0));
-                return `
-                    <select onchange="manuallySelectPlayer(${court.id}, '${team}', ${index}, this.value)" class="bg-white text-slate-900 text-[11px] border border-slate-800 rounded px-1 py-1 outline-none w-full" ${!court.isActive ? 'disabled' : ''}>
-                        <option value="">- เลือกคนแมนนวล -</option>
-                        ${readyPool.map(p => `<option value="${p.id}">${p.name} (${p.level})</option>`).join('')}
+            });
+
+            // สร้าง Pool รายชื่อ: ให้แสดงคนในคอร์ดนี้ก่อน ตามด้วยคนที่ Ready อยู่นอกสนาม
+            let currentCourtPlayers = [...court.teamA, ...court.teamB].filter(p => p !== null);
+            let readyPool = players.filter(p => p.status === 'ready' && !busyPlayerIds.includes(p.id));
+
+            let kickBtn = (court.emergency && currentPlayer) ? `<button onclick="kickPlayer(${court.id}, '${team}', ${index})" class="text-red-500 font-bold hover:text-red-400 px-1 cursor-pointer"><i class="fa-solid fa-circle-xmark"></i></button>` : '';
+
+            return `
+                <div class="flex items-center gap-1">
+                    <select onchange="handleCourtSelectChange(${court.id}, '${team}', ${index}, this.value)" class="bg-[#111625] text-amber-300 text-[11px] border border-slate-700 rounded px-1 py-1 outline-none w-full cursor-pointer focus:border-emerald-500">
+                        <option value="">- ว่าง / เลือกคน -</option>
+                        ${currentCourtPlayers.length > 0 ? `
+                            <optgroup label="-- 4 คนในสนาม --">
+                                ${currentCourtPlayers.map(p => `
+                                    <option value="${p.id}" ${currentPlayer?.id === p.id ? 'selected' : ''}>
+                                        ${p.name} (${p.gender})
+                                    </option>
+                                `).join('')}
+                            </optgroup>
+                        ` : ''}
+                        ${readyPool.length > 0 ? `
+                            <optgroup label="-- คนนอกสนาม (Ready) --">
+                                ${readyPool.map(p => `
+                                    <option value="${p.id}" ${currentPlayer?.id === p.id ? 'selected' : ''}>
+                                        ${p.name} (${p.gender})
+                                    </option>
+                                `).join('')}
+                            </optgroup>
+                        ` : ''}
                     </select>
-                `;
-            }
+                    ${kickBtn}
+                </div>
+            `;
         }
 
-        function manuallySelectPlayer(courtId, team, index, playerId) {
-            if(!playerId) return;
-            let court = courts.find(c => c.id === courtId);
-            let player = players.find(p => p.id === parseInt(playerId));
-            if (court && player) {
-                if (team === 'A') court.teamA[index] = player;
-                if (team === 'B') court.teamB[index] = player;
-                player.status = 'playing';
-                if (!court.startTime) court.startTime = Date.now();
-                renderCourts();
-                renderPlayerInputs();
-            }
-        }
+       // สร้างตัวแปรกลางสำหรับเก็บประวัติการแข่งขันทั้งหมด
+        window.matchHistory = window.matchHistory || [];
 
-        // ================== ระบบจบเกม & แจ้งเตือน 5 นาทีที่ปรับปรุงใหม่ ==================
-
-        function attemptFinishGame(courtId, isClosingCourt = false) {
-            let court = courts.find(c => c.id === courtId);
-            if(!court) return;
-
-            if (court.startTime) {
-                let elapsedMinutes = (Date.now() - court.startTime) / 60000;
-                if (elapsedMinutes < 5) {
-                    // แทนที่ confirm() ด้วย Custom Modal Popup
-                    pendingFinishCourtId = courtId;
-                    pendingCloseCourt = isClosingCourt;
-                    document.getElementById('confirm5MinModal').classList.remove('hidden');
-                    document.getElementById('confirm5MinModal').classList.add('flex');
-                    return; 
-                }
-            }
-            executeFinishGame(courtId, isClosingCourt);
-        }
-
-        function confirmFinishGameEarly() {
-            closeModal('confirm5MinModal');
-            if (pendingFinishCourtId) {
-                executeFinishGame(pendingFinishCourtId, pendingCloseCourt);
-            }
-        }
-
-        function executeFinishGame(courtId, isClosingCourt) {
+        function finishGame(courtId) {
             let court = courts.find(c => c.id === courtId);
             if(!court) return;
 
@@ -933,76 +1432,56 @@
             let [b1, b2] = court.teamB;
 
             playing.forEach(p => p.gamesPlayed += 1);
-            const recordPair = (p1, p2) => {
+            
+            // 🟢 เพิ่มส่วนนี้: บันทึกประวัติการแข่งขันเข้า Array กลาง
+            window.matchHistory.push({
+                courtName: court.name,
+                time: new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' }),
+                teamA: [ { id: a1.id, name: a1.name, gender: a1.gender }, { id: a2.id, name: a2.name, gender: a2.gender } ],
+                teamB: [ { id: b1.id, name: b1.name, gender: b1.gender }, { id: b2.id, name: b2.name, gender: b2.gender } ]
+            });
+
+            const recordPartner = (p1, p2) => {
                 p1.history[p2.id] = (p1.history[p2.id] || 0) + 1;
                 p2.history[p1.id] = (p2.history[p1.id] || 0) + 1;
             };
 
-            recordPair(a1, a2);
-            recordPair(b1, b2);
+            const recordEncounter = (p1, p2) => {
+                if (!p1.encounterHistory) p1.encounterHistory = {};
+                if (!p2.encounterHistory) p2.encounterHistory = {};
+                
+                p1.encounterHistory[p2.id] = (p1.encounterHistory[p2.id] || 0) + 1;
+                p2.encounterHistory[p1.id] = (p2.encounterHistory[p1.id] || 0) + 1;
+            };
+
+            recordPartner(a1, a2);
+            recordPartner(b1, b2);
+
+            for (let i = 0; i < playing.length; i++) {
+                for (let j = i + 1; j < playing.length; j++) {
+                    recordEncounter(playing[i], playing[j]);
+                }
+            }
             
+            const recordMixed = (p1, p2) => {
+                if (p1.gender !== p2.gender) {
+                    p1.mixedCount = (p1.mixedCount || 0) + 1;
+                    p2.mixedCount = (p2.mixedCount || 0) + 1;
+                }
+            };
+            recordMixed(a1, a2);
+            recordMixed(b1, b2);
             playing.forEach(p => {
                 p.status = 'ready';
                 p.cooldown = 0;
             });
-            
-            if (isClosingCourt) {
-                courts = courts.filter(c => c.id !== courtId);
-            } else {
-                court.teamA = [null, null];
-                court.teamB = [null, null];
-                court.startTime = null;
-            }
+            court.teamA = [null, null];
+            court.teamB = [null, null];
 
-            renderStats();
+            renderStatsSummary();
             renderPlayerInputs();
-            renderCourts();
-            
-            if(!isClosingCourt) autoFillEmptyCourts();
+            autoFillEmptyCourts();
         }
-
-        // =====================================================================
-
-        let targetCloseCourtId = null;
-        function openCloseCourtModal(courtId) {
-            targetCloseCourtId = courtId;
-            document.getElementById('closeCourtModal').classList.remove('hidden');
-            document.getElementById('closeCourtModal').classList.add('flex');
-        }
-
-        document.getElementById('btnCourtFinishNormal').onclick = function() {
-            if (targetCloseCourtId) {
-                closeModal('closeCourtModal');
-                attemptFinishGame(targetCloseCourtId, true);
-            }
-        };
-
-        document.getElementById('btnCourtFinishInterrupted').onclick = function() {
-            if (targetCloseCourtId) {
-                let court = courts.find(c => c.id === targetCloseCourtId);
-                if (court) {
-                    let playing = [...court.teamA, ...court.teamB].filter(x => x !== null);
-                    if(playing.length === 4) {
-                        playing.forEach(p => { if(p) p.status = 'queued'; });
-                        let group = {
-                            id: Date.now() + Math.random(),
-                            teamA: [court.teamA[0].id, court.teamA[1].id],
-                            teamB: [court.teamB[0].id, court.teamB[1].id],
-                            isInterrupted: true 
-                        };
-                        queues.unshift(group);
-                    } else {
-                        playing.forEach(p => { if(p) p.status = 'ready'; });
-                    }
-                }
-                
-                courts = courts.filter(c => c.id !== targetCloseCourtId);
-                closeModal('closeCourtModal');
-                renderQueue();
-                renderCourts();
-                renderPlayerInputs();
-            }
-        };
 
         function randomFillSlot(courtId) {
             let court = courts.find(c => c.id === courtId);
@@ -1059,15 +1538,12 @@
                     }
                 }
             }
-            if (!court.startTime && (court.teamA[0] || court.teamA[1] || court.teamB[0] || court.teamB[1])) {
-                court.startTime = Date.now();
-            }
             renderCourts();
             renderPlayerInputs();
-            renderStats();
+            renderStatsSummary();
         }
 
-        function showIndividualHistory(id) {
+function showIndividualHistory(id) {
             let p = players.find(x => x.id === id);
             if(!p) return;
 
@@ -1078,8 +1554,9 @@
             let totalPlayed = p.gamesPlayed;
             let historyHtml = `<div class="mb-3 text-emerald-400 font-bold">จำนวนเกมรวมวันนี้: ${totalPlayed} เกม</div>`;
             
+            // 1. คนที่เคยคู่กันมาแล้ว
             historyHtml += `<div class="font-semibold text-slate-400 mb-2 border-b border-slate-700 pb-1">คนที่เคยคู่กันมาแล้ว:</div>`;
-            let partnerEntries = Object.entries(p.history);
+            let partnerEntries = Object.entries(p.history || {});
             if(partnerEntries.length === 0) {
                 historyHtml += `<p class="text-xs text-slate-500 italic">ยังไม่เคยจับคู่ร่วมทีมกับใครเลยในเซสชันนี้</p>`;
             } else {
@@ -1091,15 +1568,16 @@
               
                         historyHtml += `
                             <li class="flex justify-between ${repeatHighlight} px-3 py-1.5 rounded">
-                                <span>เคยคู่กับ <strong class="text-slate-200">${partner.name}</strong> (${partner.level})</span>
-                                 <span class="text-amber-400 font-bold">${count} รอบ</span>
+                                <span>เคยคู่กับ <strong class="text-slate-200">${partner.name}</strong> (${partner.gender})</span>
+                                <span class="text-amber-400 font-bold">${count} รอบ</span>
                             </li>`;
                     }
                 });
                 historyHtml += `</ul>`;
             }
 
-            let unplayedPlayers = players.filter(x => x.id !== p.id && !p.history[x.id]);
+            // 2. คนที่ยังไม่เคยคู่กันเลย
+            let unplayedPlayers = players.filter(x => x.id !== p.id && (!p.history || !p.history[x.id]));
             if(unplayedPlayers.length > 0) {
                 historyHtml += `<div class="font-semibold text-slate-400 mt-4 mb-2 border-b border-slate-700 pb-1">รายชื่อคนที่ยังไม่เคยคู่กันเลยในวันนี้:</div>`;
                 historyHtml += `<div class="flex flex-wrap gap-1">`;
@@ -1109,9 +1587,54 @@
                 historyHtml += `</div>`;
             }
 
+            // 3. ประวัติการลงเล่นแต่ละรอบ (4 คนในสนาม)
+            historyHtml += `<div class="font-semibold text-slate-400 mt-4 mb-2 border-b border-slate-700 pb-1">ประวัติการลงเล่นแต่ละรอบ:</div>`;
+            
+            // ดึงข้อมูลประวัติเกมจากทุกแหล่งที่เป็นไปได้ในโปรเจกต์
+            let logs = window.matchHistory || window.historyLogs || window.gameHistory || [];
+            
+            let myGames = logs.filter(g => {
+                let teamA = g.teamA || [];
+                let teamB = g.teamB || [];
+                let allPlayers = [...teamA, ...teamB];
+                return allPlayers.some(x => {
+                    if (typeof x === 'object' && x !== null) return x.id === p.id;
+                    return parseInt(x) === p.id;
+                });
+            });
+
+            if (myGames.length === 0) {
+                historyHtml += `<p class="text-xs text-slate-500 italic">ยังไม่มีประวัติการลงแข่งขันในวันนี้</p>`;
+            } else {
+                historyHtml += `<div class="space-y-1.5 text-xs max-h-48 overflow-y-auto pr-1">`;
+                myGames.forEach((g, index) => {
+                    let teamA = g.teamA || [];
+                    let teamB = g.teamB || [];
+                    let allItems = [...teamA, ...teamB];
+
+                    let playerNames = allItems.map(item => {
+                        if (typeof item === 'object' && item !== null) return item.name;
+                        let found = players.find(x => x.id === parseInt(item));
+                        return found ? found.name : '';
+                    }).filter(Boolean);
+
+                    historyHtml += `
+                        <div class="bg-slate-900 p-2 rounded border border-slate-800">
+                            <div class="text-amber-400 font-bold mb-0.5">เกม ${index + 1} (ของ${p.name}):</div>
+                            <div class="text-slate-200 pl-1">${playerNames.join('  •  ')}</div>
+                        </div>
+                    `;
+                });
+                historyHtml += `</div>`;
+            }
+
             body.innerHTML = historyHtml;
-            document.getElementById('historyModal').classList.remove('hidden');
-            document.getElementById('historyModal').classList.add('flex');
+
+            // จัดตำแหน่งให้อยู่ตรงกลางหน้าจอเสมอ
+            let modal = document.getElementById('historyModal');
+            if (modal) {
+                modal.className = "fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4";
+            }
         }
 
         function closeModal(id) {
@@ -1125,19 +1648,188 @@
             }
         }
 
-        setInterval(() => {
-            courts.forEach(c => {
-                if (c.startTime && c.isActive) {
-                    let el = document.getElementById(`timer-${c.id}`);
-                    if (el) {
-                        let diff = Math.floor((Date.now() - c.startTime) / 1000);
-                        let m = Math.floor(diff / 60).toString().padStart(2, '0');
-                        let s = (diff % 60).toString().padStart(2, '0');
-                        el.innerText = `${m}:${s}`;
+        function toggleEditGamesMode(state) {
+            isEditGamesMode = state;
+            
+            const btnStart = document.getElementById('btn-edit-games-start');
+            const actionsDiv = document.getElementById('edit-games-actions');
+
+            if (isEditGamesMode) {
+                if (btnStart) btnStart.classList.add('hidden');
+                if (actionsDiv) actionsDiv.classList.remove('hidden');
+            } else {
+                if (btnStart) btnStart.classList.remove('hidden');
+                if (actionsDiv) actionsDiv.classList.add('hidden');
+            }
+
+            renderStatsSummary();
+        }
+
+        function saveAllGamesPlayed() {
+            let changedCount = 0;
+
+            players.forEach(p => {
+                const input = document.getElementById(`edit-game-input-${p.id}`);
+                if (input) {
+                    const newValue = parseInt(input.value, 10);
+                    if (!isNaN(newValue) && newValue >= 0 && newValue !== p.gamesPlayed) {
+                        p.gamesPlayed = newValue;
+                        changedCount++;
                     }
                 }
             });
-        }, 1000);
+
+            toggleEditGamesMode(false);
+
+            if (changedCount > 0) {
+                showNotification('อัปเดตสถิติสำเร็จ', `ปรับปรุงจำนวนเกมเรียบร้อยแล้ว (${changedCount} คน)`, 'fa-check-circle', 'emerald');
+            }
+        }
+
+        function renderStatsSummary() {
+            const container = document.getElementById('statsSummary');
+            if (!container) return;
+
+            if (!players || players.length === 0) {
+                container.innerHTML = `<div class="p-3 text-slate-500 text-center">ยังไม่มีข้อมูลผู้เล่น</div>`;
+                return;
+            }
+
+            let html = '';
+            let sortedPlayers = [...players].sort((a,b) => a.gamesPlayed - b.gamesPlayed);
+            
+            sortedPlayers.forEach(p => {
+                html += `
+                    <div class="flex items-center justify-between p-2 hover:bg-slate-800/50 transition-colors cursor-pointer" onclick="if(!isEditGamesMode) showIndividualHistory(${p.id})">
+                        <div class="flex items-center gap-2">
+                            <span class="font-medium text-slate-200">${p.name}</span>
+                            <span class="text-[10px] ${p.gender === 'M' ? 'text-blue-400' : 'text-pink-400'}">(${p.gender})</span>
+                        </div>
+                        <div>
+                `;
+
+                if (isEditGamesMode) {
+                    html += `
+                        <div class="flex items-center gap-1" onclick="event.stopPropagation()">
+                            <input type="number" 
+                                id="edit-game-input-${p.id}" 
+                                value="${p.gamesPlayed}" 
+                                min="0" 
+                                max="99"
+                                class="w-12 bg-slate-950 border border-amber-500/60 text-amber-300 font-bold text-center rounded px-1 py-0.5 focus:outline-none text-xs" />
+                            <span class="text-slate-400 text-[10px]">เกม</span>
+                        </div>
+                    `;
+                } else {
+                    const hasRepeatPair = Object.values(p.history).some(cnt => cnt >= 2);
+                    const hasMixedForMale = p.gender === 'M' && (p.mixedCount > 0);
+                    
+                    let badgeClass = "";
+                    if (hasRepeatPair) {
+                        badgeClass = "bg-red-900/40 text-red-300 px-2 py-0.5 rounded-full font-bold border border-red-500/60";
+                    } else if (hasMixedForMale) {
+                        badgeClass = "bg-amber-900/50 text-amber-400 px-2 py-0.5 rounded-full font-bold border border-amber-500/60";
+                    } else {
+                        badgeClass = "bg-emerald-900/50 text-emerald-400 px-2 py-0.5 rounded-full font-bold border border-emerald-800/60";
+                    }
+                    
+                    html += `
+                        <span class="${badgeClass} text-[11px]">
+                            ${p.gamesPlayed} เกม
+                        </span>
+                    `;
+                }
+
+                html += `
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function matchmakeFriendzone() {
+            tickCooldowns();
+            autoFillEmptyCourts();
+
+            let busyPlayerIds = [];
+            courts.forEach(c => {
+                [...c.teamA, ...c.teamB].forEach(p => { if (p) busyPlayerIds.push(p.id); });
+            });
+            
+            let available = players.filter(p => p.status === 'ready' && !busyPlayerIds.includes(p.id) && (!p.cooldown || p.cooldown === 0) && p.name.includes('🏋'));
+
+            if (available.length < 4) {
+                showNotification('แจ้งเตือน', 'สมาชิกมีไม่ครบบบบค่า นั่งรอไปก่อนน้า', 'fa-users', 'pink');
+                return;
+            }
+
+            shuffleArray(available);
+
+            const weightRepeat = 100000;
+            const weightTotalGames = 5000;   
+            const weightGamesRange = 2000;   
+            const weightBalance = 100;
+            
+            while (available.length >= 4) {
+                const combos = combinations(available, 4);
+                let bestChoice = null;
+                let bestScore = Infinity;
+
+                combos.forEach(group => {
+                    const sumGames = group.reduce((sum, p) => sum + p.gamesPlayed, 0);
+                    const games = group.map(p => p.gamesPlayed);
+                    const gamesRange = Math.max(...games) - Math.min(...games); 
+
+                    const pairings = [
+                        { A: [group[0], group[1]], B: [group[2], group[3]] },
+                        { A: [group[0], group[2]], B: [group[1], group[3]] },
+                        { A: [group[0], group[3]], B: [group[1], group[2]] }
+                    ];
+
+                    pairings.forEach(setup => {
+                        const repeatA = setup.A[0].history[setup.A[1].id] || 0;
+                        const repeatB = setup.B[0].history[setup.B[1].id] || 0;
+                        const totalRepeat = repeatA + repeatB;
+
+                        const genA = getGenderValue(setup.A[0]) + getGenderValue(setup.A[1]);
+                        const genB = getGenderValue(setup.B[0]) + getGenderValue(setup.B[1]);
+                        const balanceDiff = Math.abs(genA - genB);
+
+                        const score = (totalRepeat * weightRepeat) + 
+                                      (sumGames * weightTotalGames) + 
+                                      (gamesRange * weightGamesRange) + 
+                                      (balanceDiff * weightBalance) + 
+                                      Math.random();
+                        if (score < bestScore) {
+                            bestScore = score;
+                            bestChoice = { group, setup, score };
+                        }
+                    });
+                });
+
+                if (!bestChoice) break;
+
+                bestChoice.setup.A.forEach(p => { let pp = players.find(x => x.id === p.id); if (pp) { pp.status = 'queued'; } });
+                bestChoice.setup.B.forEach(p => { let pp = players.find(x => x.id === p.id); if (pp) { pp.status = 'queued'; } });
+                
+                queues.push({
+                    id: Date.now() + Math.random(),
+                    teamA: [bestChoice.setup.A[0].id, bestChoice.setup.A[1].id],
+                    teamB: [bestChoice.setup.B[0].id, bestChoice.setup.B[1].id],
+                    isInterrupted: false
+                });
+
+                const usedIds = new Set(bestChoice.group.map(p => p.id));
+                available = available.filter(p => !usedIds.has(p.id));
+            }
+
+            renderPlayerInputs();
+            renderQueue();
+            autoFillEmptyCourts();
+            updateRestRoundsAndCheck();
+        }
 
         window.onload = init;
     </script>
