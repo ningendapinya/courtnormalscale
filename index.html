@@ -400,10 +400,10 @@
                 { name: 'มัดหมี่', gender: 'W' }, { name: 'เก่ง', gender: 'M' },
                 { name: 'ตั้ม', gender: 'M' }, { name: 'น้ำแข็ง', gender: 'W' },
                 { name: 'พี่แบม', gender: 'M' }, { name: 'อาโย', gender: 'M' },
-				{ name: 'พี่โต้ง', gender: 'M' }, { name: 'พี่นะ', gender: 'M' },
-				{ name: 'พี่กอล์ฟ', gender: 'M' }, { name: 'พี่แตงกวา', gender: 'W' },
+		{ name: 'พี่โต้ง', gender: 'M' }, { name: 'พี่นะ', gender: 'M' },
+		{ name: 'พี่กอล์ฟ', gender: 'M' }, { name: 'พี่แตงกวา', gender: 'W' },
                 { name: 'พี่บูม', gender: 'M' },{ name: 'พี่เดียร์', gender: 'M' },
-				{ name: 'พี่ก้อง', gender: 'M' }
+		{ name: 'พี่ก้อง', gender: 'M' }
             ];
             
             players = initialPlayers.map((p, idx) => ({
@@ -1605,20 +1605,20 @@
                 let badgeClass = "bg-emerald-950/80 text-emerald-400 border-emerald-600/60";
 
                 if (p.gender === 'W') {
-                    if (femaleOnlyCount === 0) {
-                        badgeClass = "bg-pink-950/80 text-pink-400 border-pink-500/80";
-                    } else if (femaleOnlyCount >= 1) {
-                        badgeClass = "bg-emerald-950/80 text-emerald-400 border-emerald-500/80";
-                    }
+   		 if (femaleOnlyCount === 0) {
+     		   badgeClass = "bg-pink-950/80 text-pink-400 border-pink-500/80"; // สีชมพู
+    		} else if (femaleOnlyCount >= 1) {
+   		     badgeClass = "bg-emerald-950/80 text-emerald-400 border-emerald-500/80"; // สีเขียว
+  		  }
                 } else if (p.gender === 'M') {
-                    if (maleOnlyCount <= 1) {
-                        badgeClass = "bg-rose-950/80 text-rose-400 border-rose-600/80";
-                    } else if (maleOnlyCount === 2) {
-                        badgeClass = "bg-amber-950/80 text-amber-400 border-amber-500/80";
-                    } else if (maleOnlyCount >= 3) {
-                        badgeClass = "bg-emerald-950/80 text-emerald-400 border-emerald-500/80";
-                    }
-                }
+  		  if (maleOnlyCount === 0) {
+     		   badgeClass = "bg-rose-950/80 text-rose-400 border-rose-600/80"; // สีแดง
+    		} else if (maleOnlyCount === 1) {
+     		   badgeClass = "bg-amber-950/80 text-amber-400 border-amber-500/80"; // สีเหลือง
+   		 } else if (maleOnlyCount >= 2) {
+      		  badgeClass = "bg-emerald-950/80 text-emerald-400 border-emerald-500/80"; // สีเขียว
+   		 }
+		}
 
                 html += `
                     <div class="flex items-center justify-between p-2 hover:bg-slate-800/50 transition-colors cursor-pointer" onclick="if(!isEditGamesMode) showIndividualHistory(${p.id})">
