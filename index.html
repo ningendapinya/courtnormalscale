@@ -344,8 +344,8 @@
         let players = [];
         let queues = []; 
         let courts = [
-            { id: 1, name: "คอร์ด 1", teamA: [null, null], teamB: [null, null], emergency: false, isActive: true },
-            { id: 2, name: "คอร์ด 2", teamA: [null, null], teamB: [null, null], emergency: false, isActive: true }
+            { id: 1, name: "คอร์ด 1", teamA: [null, null], teamB: [null, null], emergency: false, isActive: true, matchStartTime: null },
+            { id: 2, name: "คอร์ด 2", teamA: [null, null], teamB: [null, null], emergency: false, isActive: true, matchStartTime: null }
         ];
         let newlyAddedCourtId = null;
         let notificationTimeout = null;
@@ -389,6 +389,7 @@
                 c.teamA = [null, null];
                 c.teamB = [null, null];
                 c.emergency = false;
+                c.matchStartTime = null;
             });
             
             const initialPlayers = [
@@ -685,18 +686,15 @@
     		let womenInGroup = group.filter(p => p.gender === 'W');
    		let womenCount = womenInGroup.length;
 
-	// ----------------------------------------
    		let mai = group.find(p => p.name === 'มาย');
   		if (mai && mai.lastPlayedWithWoman && womenCount > 0) {
-        return; // หากเกมที่แล้วเจอผู้หญิง เกมนี้จะข้ามกลุ่มที่มีผู้หญิงทันที (บังคับชายล้วน)
+        return; 
     }
-    // ----------------------------------------
 
                 if (!allowedFemaleCounts.includes(womenCount)) return;
 
                 let gamesPlayedList = group.map(p => p.gamesPlayed || 0);
                 
-                // หาค่ามินิฮิสโตแกรม/สถิติจำนวนเกมในกลุ่ม
                 let maxGames = Math.max(...gamesPlayedList);
                 let minGames = Math.min(...gamesPlayedList);
                 let sumGames = gamesPlayedList.reduce((a, b) => a + b, 0);
@@ -751,21 +749,12 @@
 
         function sortCandidates(candidates) {
             candidates.sort((a, b) => {
-                // 1. เน้นกลุ่มที่มีจำนวนเกมรวมน้อยที่สุดก่อน (ดันคนเล่นน้อยขึ้นมา)
                 if (a.sumGames !== b.sumGames) return a.sumGames - b.sumGames;
-                
-                // 2. เน้นกลุ่มที่มีค่า Max Games ต่ำสุด (ป้องกันคนเกมเยอะแอบติดเข้ามา)
                 if (a.maxGames !== b.maxGames) return a.maxGames - b.maxGames;
-                
-                // 3. ช่วงห่างของจำนวนเกมในกลุ่มต้องแคบที่สุด (เกมน้อยเล่นกับเกมน้อย)
                 if (a.gamesRange !== b.gamesRange) return a.gamesRange - b.gamesRange;
-                
-                // 4. เงื่อนไขชายล้วน
                 if (b.maleOnlyPriority !== a.maleOnlyPriority) {
                     return b.maleOnlyPriority - a.maleOnlyPriority; 
                 }
-                
-                // 5. ป้องกันไม่ให้เจอคู่เดิมซ้ำๆ
                 if (a.maxEncounterBetweenPair !== b.maxEncounterBetweenPair) return a.maxEncounterBetweenPair - b.maxEncounterBetweenPair;
                 if (a.neverMetPairs !== b.neverMetPairs) return b.neverMetPairs - a.neverMetPairs;
                 return a.totalEncounter - b.totalEncounter;
@@ -775,16 +764,10 @@
         function filterPriorityPool(pool) {
             if (pool.length <= 4) return pool;
             
-            // จัดเรียงผู้เล่นตามจำนวนเกมจากน้อยไปมาก
             let sorted = [...pool].sort((a, b) => (a.gamesPlayed || 0) - (b.gamesPlayed || 0));
-            
-            // หาจำนวนเกมขั้นต่ำสุดที่มีในกลุ่มสแตนด์บาย
             let minGames = sorted[0].gamesPlayed || 0;
-            
-            // ดึงกลุ่มคนที่เล่นน้อยที่สุด (ยอมให้ต่างกันไม่เกิน 1 เกม เพื่อเพิ่มตัวเลือกในการจัดกลุ่มชาย/หญิง)
             let priorityPool = sorted.filter(p => (p.gamesPlayed || 0) <= minGames + 1);
             
-            // ถ้าดึงมาแล้วยังมีไม่ถึง 4 คน ให้เติมคนที่เกมน้อยถัดไปจนครบอย่างน้อย 4 คน
             if (priorityPool.length < 4) {
                 return sorted.slice(0, Math.max(4, priorityPool.length));
             }
@@ -820,7 +803,6 @@
                 return [...(g.teamA || []), ...(g.teamB || [])].map(p => typeof p === 'object' ? p.id : parseInt(p));
             });
 
-            // คัดเลือก Pool ดันเฉพาะคนที่เกมน้อยที่สุดมาสุ่มก่อน
             let priorityAvailable = filterPriorityPool(available);
 
             let validCandidates = evaluateCombos(priorityAvailable, pastGroups, true);
@@ -828,7 +810,6 @@
                 validCandidates = evaluateCombos(priorityAvailable, pastGroups, false);
             }
 
-            // ถ้าระดับ PriorityPool ไม่ผ่านเงื่อนไข (เช่น ชาย/หญิง ไม่ลงตัวตามเงื่อนไขตั้งค่า) ให้ขยายสุ่มจาก Pool ทั้งหมด
             if (validCandidates.length === 0) {
                 validCandidates = evaluateCombos(available, pastGroups, true);
                 if (validCandidates.length === 0) {
@@ -901,6 +882,7 @@
                     } else {
                         playing.forEach(p => { if (p) p.status = 'ready'; });
                     }
+                    court.matchStartTime = null;
                 }
                 
                 courts = courts.filter(c => c.id !== targetCloseCourtId);
@@ -912,6 +894,8 @@
 
         function closeCourtNormal() {
             if (targetCloseCourtId) {
+                let court = courts.find(c => c.id === targetCloseCourtId);
+                if (court) court.matchStartTime = null;
                 finishGame(targetCloseCourtId);
                 courts = courts.filter(c => c.id !== targetCloseCourtId);
                 closeModal('closeCourtModal');
@@ -998,6 +982,9 @@
                 court.teamA = [players.find(x => x.id === q.teamA[0]), players.find(x => x.id === q.teamA[1])];
                 court.teamB = [players.find(x => x.id === q.teamB[0]), players.find(x => x.id === q.teamB[1])];
                 [...court.teamA, ...court.teamB].forEach(p => { if (p) p.status = 'playing'; });
+                
+                // บันทึกเวลาที่เริ่มลงสนามสำหรับเช็คปุ่มจบเกม 2 นาที
+                court.matchStartTime = Date.now();
 
                 queues.splice(qIndex, 1);
                 renderAll();
@@ -1012,6 +999,9 @@
                         court.teamA = [players.find(x => x.id === q.teamA[0]), players.find(x => x.id === q.teamA[1])];
                         court.teamB = [players.find(x => x.id === q.teamB[0]), players.find(x => x.id === q.teamB[1])];
                         [...court.teamA, ...court.teamB].forEach(p => { if (p) p.status = 'playing'; });
+                        
+                        // บันทึกเวลาที่เริ่มลงสนาม
+                        court.matchStartTime = Date.now();
                     }
                 }
             }
@@ -1028,7 +1018,8 @@
                 teamA: [null, null],
                 teamB: [null, null],
                 emergency: false,
-                isActive: true
+                isActive: true,
+                matchStartTime: null
             });
             
             renderCourts();
@@ -1101,6 +1092,11 @@
                 if(player) player.status = 'ready';
                 if(team === 'A') court.teamA[index] = null;
                 if(team === 'B') court.teamB[index] = null;
+                
+                // ถ้านำผู้เล่นออกจนหมด ให้รีเซ็ตเวลาเริ่มเกม
+                if (!court.teamA[0] && !court.teamA[1] && !court.teamB[0] && !court.teamB[1]) {
+                    court.matchStartTime = null;
+                }
                 renderAll();
             }
         }
@@ -1114,6 +1110,7 @@
                 playing.forEach(p => { p.status = 'ready'; });
                 court.teamA = [null, null];
                 court.teamB = [null, null];
+                court.matchStartTime = null;
 
                 renderAll();
             }
@@ -1290,6 +1287,14 @@
                     }
                 }
                 
+                // หากผู้เล่นในคอร์ดว่างทั้งหมด ให้รีเซ็ตเวลาเริ่มเกม
+                if (!court.teamA[0] && !court.teamA[1] && !court.teamB[0] && !court.teamB[1]) {
+                    court.matchStartTime = null;
+                } else if (!court.matchStartTime) {
+                    // ถ้ามีการเติมคนแล้วยังไม่มีเวลาเริ่ม ให้เริ่มนับเวลาใหม่
+                    court.matchStartTime = Date.now();
+                }
+
                 renderAll();
             }
             
@@ -1308,6 +1313,20 @@
         function finishGame(courtId) {
             let court = courts.find(c => c.id === courtId);
             if(!court) return;
+
+            // ตรวจสอบเงื่อนไข 2 นาทีก่อนจบเกม
+            if (court.matchStartTime) {
+                let elapsedTime = Date.now() - court.matchStartTime;
+                let remainingTime = 120000 - elapsedTime;
+                if (remainingTime > 0) {
+                    let remainingSeconds = Math.ceil(remainingTime / 1000);
+                    let mins = Math.floor(remainingSeconds / 60);
+                    let secs = remainingSeconds % 60;
+                    let timeStr = mins > 0 ? `${mins} นาที ${secs} วินาที` : `${secs} วินาที`;
+                    showNotification('ยังไม่ครบกำหนดเวลา', `สนามนี้เพิ่งสุ่มเริ่มเล่นได้ไม่ถึง 2 นาที<br>กรุณารออีกประมาณ <strong>${timeStr}</strong> จึงจะสามารถกดปุ่ม "จบเกม" ได้`, 'fa-hourglass-half', 'amber');
+                    return;
+                }
+            }
 
             let playing = [...court.teamA, ...court.teamB].filter(x => x !== null);
             if(playing.length < 4) {
@@ -1367,6 +1386,7 @@
             });
             court.teamA = [null, null];
             court.teamB = [null, null];
+            court.matchStartTime = null;
 
             renderAll();
             autoFillEmptyCourts();
@@ -1398,19 +1418,16 @@
             });
             let readyPool = players.filter(p => p.status === 'ready' && !busyPlayerIds.includes(p.id) && (!p.cooldown || p.cooldown === 0));
             
-            // เรียงลำดับ readyPool ดึงคนที่เล่นน้อยที่สุดขึ้นมาก่อน
             readyPool.sort((a, b) => (a.gamesPlayed || 0) - (b.gamesPlayed || 0));
 
             for(let slot of emptySlots) {
                 if (readyPool.length > 0) {
-                    // ดึงเฉพาะกลุ่มที่มีจำนวนเกมต่ำสุด
                     let minGames = readyPool[0].gamesPlayed || 0;
                     let lowestGamePlayers = readyPool.filter(p => (p.gamesPlayed || 0) === minGames);
                     
                     let randIndex = Math.floor(Math.random() * lowestGamePlayers.length);
                     let selectedPlayer = lowestGamePlayers[randIndex];
                     
-                    // ลบออกจาก readyPool
                     readyPool = readyPool.filter(p => p.id !== selectedPlayer.id);
 
                     if (slot.team === 'A') court.teamA[slot.idx] = selectedPlayer;
@@ -1434,6 +1451,12 @@
                     break;
                 }
             }
+
+            // ถ้าก่อนหน้านี้คอร์ดว่างแล้วเติมคน ให้เริ่มจับเวลาใหม่
+            if (!court.matchStartTime) {
+                court.matchStartTime = Date.now();
+            }
+
             renderAll();
         }
 
@@ -1605,17 +1628,17 @@
 
                 if (p.gender === 'W') {
    		 if (femaleOnlyCount === 0) {
-     		   badgeClass = "bg-pink-950/80 text-pink-400 border-pink-500/80"; // สีชมพู
+     		   badgeClass = "bg-pink-950/80 text-pink-400 border-pink-500/80"; 
     		} else if (femaleOnlyCount >= 1) {
-   		     badgeClass = "bg-emerald-950/80 text-emerald-400 border-emerald-500/80"; // สีเขียว
+   		     badgeClass = "bg-emerald-950/80 text-emerald-400 border-emerald-500/80"; 
   		  }
                 } else if (p.gender === 'M') {
   		  if (maleOnlyCount === 0) {
-     		   badgeClass = "bg-rose-950/80 text-rose-400 border-rose-600/80"; // สีแดง
+     		   badgeClass = "bg-rose-950/80 text-rose-400 border-rose-600/80"; 
     		} else if (maleOnlyCount === 1) {
-     		   badgeClass = "bg-amber-950/80 text-amber-400 border-amber-500/80"; // สีเหลือง
+     		   badgeClass = "bg-amber-950/80 text-amber-400 border-amber-500/80"; 
    		 } else if (maleOnlyCount >= 2) {
-      		  badgeClass = "bg-emerald-950/80 text-emerald-400 border-emerald-500/80"; // สีเขียว
+      		  badgeClass = "bg-emerald-950/80 text-emerald-400 border-emerald-500/80"; 
    		 }
 		}
 
@@ -1806,10 +1829,7 @@
                 return;
             }
 
-            // เรียงลำดับจากคนเกมน้อยสุดขึ้นมาก่อน
             available.sort((a, b) => (a.gamesPlayed || 0) - (b.gamesPlayed || 0));
-
-            // ดึงกลุ่มคนที่เกมน้อยที่สุด 4 คนแรก
             let selected = available.slice(0, 4);
 
             [...court.teamA, ...court.teamB].forEach(p => {
@@ -1821,6 +1841,9 @@
             court.teamB = [selected[2], selected[3]];
 
             selected.forEach(p => { p.status = 'playing'; });
+            
+            // เริ่มจับเวลาใหม่เมื่อมีการสุ่มเติม
+            court.matchStartTime = Date.now();
 
             renderAll();
         }
@@ -1842,7 +1865,6 @@
                 return [...(g.teamA || []), ...(g.teamB || [])].map(p => typeof p === 'object' ? p.id : parseInt(p));
             });
 
-            // คัดเลือก Priority Pool เฉพาะกลุ่มคนที่เกมน้อยที่สุด
             let priorityReady = filterPriorityPool(readyPlayers);
 
             let validCandidates = evaluateCombos(priorityReady, pastGroups, true);
@@ -1850,7 +1872,6 @@
                 validCandidates = evaluateCombos(priorityReady, pastGroups, false);
             }
 
-            // ถ้าระดับ PriorityPool ไม่ผ่าน ให้ขยายสุ่มจาก Ready ทั้งหมด
             if (validCandidates.length === 0) {
                 validCandidates = evaluateCombos(readyPlayers, pastGroups, true);
                 if (validCandidates.length === 0) {
